@@ -5,22 +5,27 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MonetizationIcon from "@mui/icons-material/MonetizationOn";
 import StarRate from "@mui/icons-material/StarRate";
 import Typography from "@mui/material/Typography";
+import Fab from '@mui/material/Fab';
+import NavigationIcon from '@mui/icons-material/Navigation';
 
-const styles = {
-  root: {   
+const styles = { 
     chipSet: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexWrap: "wrap",
-    listStyle: "none",
-    padding: 1.5,
-    margin: 0,
-  },
-  chipLabel: {
-    margin: 0.5,
-  },
-},
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexWrap: "wrap",
+      listStyle: "none",
+      padding: 1.5,
+      margin: 0,
+    },
+    chipLabel: {
+      margin: 0.5,
+    },
+    fabPosition: {
+      position: "absolute",
+      bottom: 16,
+      right: 16,
+    },
 };
 
 const MovieDetails = ( props) => {
@@ -58,6 +63,20 @@ const MovieDetails = ( props) => {
         />
         <Chip label={`Released: ${movie.release_date}`} />
       </Paper>
+      <Paper component="ul" sx={styles.chipSet}>
+          <li>
+            <Chip label="Production Countries" sx={styles.chipLabel} color="primary" />
+          </li>
+          {movie.production_countries.map((g) => (
+            <li key={g.name}>
+              <Chip label={g.name}  />
+            </li>
+          ))}
+      </Paper>
+      <Fab color="error" variant="extended" sx={styles.fabPosition}>
+        <NavigationIcon sx={{ mr: 1 }} />
+        Reviews
+      </Fab>
       </>
   );
 };
