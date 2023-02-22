@@ -18,12 +18,13 @@ const styles = {
 };
 
 const MoviePage = (props) => {
-  const { id } = useParams();
+  const { id, favorite } = useParams();
   const [movie, setMovie] = useState(null);
   const [images, setImages] = useState([]);
   
   useEffect(() => {
     getMovie(id).then((movie) => {
+      movie.favourite = favorite === "true";
       setMovie(movie);
     });
   }, [id]);
