@@ -26,7 +26,7 @@ export const genreFiltering = {
 };
 
 const FavouriteMoviesPage = () => {
-  const { favorites: movieIds } = useContext(MoviesContext);
+  const { favourites: movieIds } = useContext(MoviesContext);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
