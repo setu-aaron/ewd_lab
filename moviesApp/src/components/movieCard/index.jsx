@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import img from '../../images/film-poster-placeholder.png'
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
+import { MoviesContext } from "../../contexts/moviesContext";
 
 
 const styles = {
@@ -24,12 +25,19 @@ const styles = {
   },
 };
 
-export default function MovieCard(props) {
-  const movie = props.movie;
+export default function MovieCard({movie}) {
+  const { favorites, addToFavourites, removeFromFavorites } = useContext(MoviesContext);
+  
+  if (favorites.find((id) => id === movie.id)) {
+    movie.favourite = true;
+  } else {
+    movie.favourite = false;
+  }
 
-const handleAddToFavourite = (e) => {
+const handleAddToFavourites = (e) => {
+  console.log("Add to favorites")
   e.preventDefault();
-  props.selectFavourite(movie.id);
+  addToFavourites(movie);
 };
 
   return (
@@ -75,7 +83,7 @@ const handleAddToFavourite = (e) => {
         </Grid>
       </CardContent>
       <CardActions disableSpacing>
-      <IconButton aria-label="add to favourites" onClick={handleAddToFavourite}>
+      <IconButton aria-label="add to favourites" onClick={handleAddToFavourites}>
         <FavoriteIcon color="primary" fontSize="large" />
       </IconButton>
         <Link to={`/movies/${movie.id}/${movie.favourite}`}>
