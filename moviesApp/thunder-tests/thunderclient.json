@@ -144,11 +144,11 @@
     "colId": "a8a070d1-43b8-414a-aa45-595d67a9abc9",
     "containerId": "",
     "name": "MovieCredits",
-    "url": "https://api.themoviedb.org/3/movie/937278/credits?api_key=e7ff1babf9d4b0d3a3351ce8d0739b3e",
+    "url": "https://api.themoviedb.org/3/movie/505642/credits?api_key=e7ff1babf9d4b0d3a3351ce8d0739b3e",
     "method": "GET",
     "sortNum": 90000,
     "created": "2023-03-18T01:46:57.359Z",
-    "modified": "2023-03-18T01:46:57.359Z",
+    "modified": "2023-03-18T21:12:57.932Z",
     "headers": [],
     "params": [
       {
