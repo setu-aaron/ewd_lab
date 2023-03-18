@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
-import AddToFavouritesIcon from "../components/cardIcons/adddToFavourites";
+import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 
 
 import MovieFilterUI, {

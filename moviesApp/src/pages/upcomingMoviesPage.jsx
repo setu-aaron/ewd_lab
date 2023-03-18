@@ -8,7 +8,7 @@ import MovieFilterUI, {
   titleFilter,
   genreFilter,
 } from "../components/movieFilterUI";
-import AddToFavouritesIcon from "../components/cardIcons/adddToFavourites";
+import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 
