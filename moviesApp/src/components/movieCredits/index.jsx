@@ -1,28 +1,77 @@
 import React from "react";
-import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+import ImageListItemBar from "@mui/material/ImageListItemBar";
+
 const styles = {
     paper: {
     listStyle: "none",
-    }
+    },
+    gridListRoot: {
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-around",
+      },
+    gridList: {
+      width: 450,
+      height: '100vh',
+    },
 
 }
 const MovieCredits = ( {credits}) => {  
     console.log("Credits:", credits)
     return (<>
-    <Paper component="ul" sx={styles.paper}>
-        <li>Actor : Character</li>
-        {credits.cast.map((c) => (
-            <>
-            <li key={c.id}>{c.name} : {c.character} 
-            </li>
-            <img
-            src={`https://image.tmdb.org/t/p/w500/${c.profile_path}`}
-            alt={credits.profile_path}
-            style={{height: 200 + 'px'}}
-            />
-            </>
-        ))}
-    </Paper>
+     {credits ? (
+        <Grid container spacing={5} style={{ padding: "15px" }}>
+            <Grid item xs={3} id="castId">
+                <div sx={styles.gridListRoot}>
+                    <h2>Cast</h2>
+                    <ImageList cols={1}>
+                        {credits.cast.map((c) => ( 
+                            <ImageListItem
+                                key={c.profile_path}
+                                cols={1}>
+                                    {c.profile_path ?(
+                                <img src={`https://image.tmdb.org/t/p/w500/${c.profile_path}`} />
+                                    ) : (
+                                <img src="/missingImage3.png" />
+                                )}
+                                <ImageListItemBar
+                                    title={c.name}
+                                    subtitle={c.character}/>
+                            </ImageListItem>
+                        ))}
+                    </ImageList>
+                </div>
+            </Grid>
+            <Grid item xs={3}
+                id="crewId">
+                <h2>Crew</h2>
+                <div sx={styles.gridListRoot}>
+                <ImageList cols={1}>
+                    {credits.crew.map((c) => ( 
+                        <ImageListItem
+                            key={c.profile_path}
+                            cols={1}>
+                                {c.profile_path ?(
+                            <img
+                                src={`https://image.tmdb.org/t/p/w500/${c.profile_path}`} />
+                                ) : (
+                                    <img src="/missingImage3.png" />
+                                    )}
+                             <ImageListItemBar
+                                title={c.name}
+                                subtitle={c.job}/>
+                    </ImageListItem>
+                    ))}
+                </ImageList>
+            </div>
+            </Grid>
+        </Grid>
+     ) : (
+            <p>Waiting for movie credits</p>
+     )}
     </>);
 }
 

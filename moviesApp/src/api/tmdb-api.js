@@ -96,6 +96,29 @@
       });
   };
 
+  export const getMovieCredits = (args) => {
+    console.log("MC", args)
+    const [, idPart] = args.queryKey;
+    console.log("MC ID Part: ", idPart)
+    const { id } = idPart;
+    console.log("MCID: ", id)
+
+    console.log("Getting Movie Credits for: ", id)
+    let url = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    console.log("Movie Credits URL: ", url)
+    return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        console.log("Error calling url: ", {url});
+        throw new Error(response.json().message);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+       throw error
+    });
+  }
+
 
   
   
