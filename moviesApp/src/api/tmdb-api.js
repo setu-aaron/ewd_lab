@@ -117,8 +117,24 @@
     .catch((error) => {
        throw error
     });
-  }
+  };
 
+  export const getPerson = (args) => {
+    const [, idPart] = args.queryKey;
+    const { id } = idPart;
+    let url = `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        console.log("Error calling url: ", {url});
+        throw new Error(response.json().message);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+       throw error
+    });
+  };
 
   
   

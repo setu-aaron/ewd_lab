@@ -50,7 +50,7 @@ export default function MovieCard({movie, action}) {
               </Typography>
             }
           />
-
+      <Link to={`/movies/${movie.id}/${movie.favourite}`}>
       <CardMedia
         sx={styles.media}
         image={
@@ -59,6 +59,7 @@ export default function MovieCard({movie, action}) {
             : img
         }
       />
+      </Link>
       <CardContent>
         <Grid container>
           <Grid item xs={6}>

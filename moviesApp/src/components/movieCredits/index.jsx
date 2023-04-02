@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
+import { Link } from "react-router-dom";
 
 const styles = {
     paper: {
@@ -27,22 +28,24 @@ const MovieCredits = ( {credits}) => {
             <Grid item xs={3} id="castId">
                 <div sx={styles.gridListRoot}>
                     <h2>Cast</h2>
-                    <ImageList cols={1}>
-                        {credits.cast.map((c) => ( 
-                            <ImageListItem
-                                key={c.profile_path}
-                                cols={1}>
-                                    {c.profile_path ?(
-                                <img src={`https://image.tmdb.org/t/p/w500/${c.profile_path}`} />
-                                    ) : (
-                                <img src="/missingImage3.png" />
-                                )}
-                                <ImageListItemBar
-                                    title={c.name}
-                                    subtitle={c.character}/>
-                            </ImageListItem>
-                        ))}
-                    </ImageList>
+                        <ImageList cols={1}>
+                            {credits.cast.map((c) => ( 
+                                <Link to={`/person/${c.id}`}>
+                                    <ImageListItem
+                                        key={c.profile_path}
+                                        cols={1}>
+                                            {c.profile_path ?(
+                                        <img src={`https://image.tmdb.org/t/p/w500/${c.profile_path}`} />
+                                            ) : (
+                                        <img src="/missingImage3.png" />
+                                        )}
+                                        <ImageListItemBar
+                                            title={c.name}
+                                            subtitle={c.character}/>
+                                    </ImageListItem>
+                                </Link>
+                            ))}
+                        </ImageList>
                 </div>
             </Grid>
             <Grid item xs={3}
@@ -51,6 +54,8 @@ const MovieCredits = ( {credits}) => {
                 <div sx={styles.gridListRoot}>
                 <ImageList cols={1}>
                     {credits.crew.map((c) => ( 
+
+                        <Link to={`/person/${c.id}`}>
                         <ImageListItem
                             key={c.profile_path}
                             cols={1}>
@@ -63,7 +68,8 @@ const MovieCredits = ( {credits}) => {
                              <ImageListItemBar
                                 title={c.name}
                                 subtitle={c.job}/>
-                    </ImageListItem>
+                        </ImageListItem>
+                        </Link>
                     ))}
                 </ImageList>
             </div>
