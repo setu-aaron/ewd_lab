@@ -47,21 +47,28 @@ export default function Paginator(props){
             newIndex = props.props.lastPage
         } 
         console.log("In the paginator, onNewPage", newIndex)
-        props.props.setCurrentPage(newIndex)
+        //props.props.setCurrentPage(newIndex)
+        return newIndex;
       };
 
     return (
         <Container sx={styles.root}>
-            <Button variant="contained" onClick={()=>onNewPage(props.props.currentPage - 1)} >Prev</Button>
+            {props.props.currentPage > 0 ? (
+                <>
+               
+            <Button href={`/movies/page/${onNewPage(props.props.currentPage - 1)}`} variant="contained" onClick={()=>onNewPage(props.props.currentPage - 1)} >Prev</Button>
             {createButtons().map((b) => {
                 let isCurrent = (b === props.props.currentPage)
                 return isCurrent ? (
                    <Button variant="outlined" key={b}>{b}</Button>
                 ) : (
-                    <Button variant="text" key={b} onClick={()=>onNewPage(b)} >{b}</Button>
+                    <Button variant="text" key={b} href={`/movies/page/${onNewPage(b)}`} >{b}</Button>
                 )
                 })}
-            <Button variant="contained" onClick={()=>onNewPage(props.props.currentPage  + 1)} >Next</Button>
+            <Button href={`/movies/page/${onNewPage(props.props.currentPage + 1)}`} variant="contained" onClick={()=>onNewPage(props.props.currentPage + 1)} >Next</Button>
+             </>
+            ) : (<></>)
+            }
         </Container>
     )
 }

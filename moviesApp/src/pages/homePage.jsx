@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import Spinner from "../components/spinner";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
@@ -25,8 +26,9 @@ const genreFiltering = {
 };
 
 const HomePage = (props) => {
-  const [cPage, setCPage] = useState(1);
-  const { data, error, isLoading, isError } = useQuery(["discover", cPage], getMovies);
+  const { id } = useParams();
+
+  const { data, error, isLoading, isError } = useQuery(["discover", id], getMovies);
 
 
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
@@ -51,17 +53,11 @@ const HomePage = (props) => {
     setFilterValues(updatedFilterSet);
   };
 
-  const setCurrentPage = (newPage) => {
-    console.log("HomePage: requesting new page of movies: ", newPage);
-    setCPage(newPage);
-  }
-
   const movies = data ? data.results : [];
   const {total_pages, page, total_results} = data;
   const displayedMovies = filterFunction(movies);
   const paginationProps = {
     currentPage: page,
-    setCurrentPage: setCurrentPage,
     visiblePages: 5,
     lastPage: total_pages,
   }
