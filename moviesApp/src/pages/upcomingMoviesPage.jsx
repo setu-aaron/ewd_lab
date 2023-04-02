@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PageTemplate from '../components/templateMovieListPage'
 import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
 import Spinner from "../components/spinner";
 import { getUpcomingMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
@@ -26,7 +27,8 @@ const genreFiltering = {
 
 
 const UpcomingMoviesPage = (props) => {
-  const { data, error, isLoading, isError } = useQuery("upcoming", getUpcomingMovies);
+  const { id } = useParams();
+  const { data, error, isLoading, isError } = useQuery(["upcoming", id], getUpcomingMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
@@ -50,16 +52,23 @@ const UpcomingMoviesPage = (props) => {
   };
 
   const movies = data ? data.results : [];
+  const {total_pages, page, total_results} = data;
   const displayedMovies = filterFunction(movies);
+  const paginationProps = {
+    currentPage: page,
+    visiblePages: 5,
+    lastPage: total_pages,
+  }
 
   return (
     <>
     <PageTemplate
-      title='Discover Movies'
+      title='Upcoming Movies'
       movies={displayedMovies}
       action={(movie)=>{
         return <AddToPlaylistIcon movie={movie}/>
       }}
+      paginationProps={paginationProps}
     />
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}

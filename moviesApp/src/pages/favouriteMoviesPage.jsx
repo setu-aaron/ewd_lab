@@ -68,6 +68,11 @@ const FavouriteMoviesPage = () => {
         : [filterValues[0], changedFilter];
     setFilterValues(updatedFilterSet);
   };
+  const paginationProps = {
+    currentPage: 0,
+    visiblePages: 0,
+    lastPage: 0,
+  }
 
   return (
       <PageTemplate
@@ -81,6 +86,7 @@ const FavouriteMoviesPage = () => {
             </>
           );
         }}
+        paginationProps={paginationProps}
       />
   );
 };
