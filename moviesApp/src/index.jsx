@@ -5,11 +5,12 @@ import SiteHeader from "./components/siteHeader";
 import HomePage from "./pages/homePage";
 import UpcomingMoviePage from "./pages/upcomingMoviesPage";
 import MoviePage from "./pages/movieDetailsPage";
+import ShowDetailsPage from "./pages/showDetailsPage";
 import FavouriteMoviesPage from "./pages/favouriteMoviesPage"; 
 import MovieReviewPage from "./pages/movieReviewPage";
 import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import PersonDetailsPage from "./pages/personDetailsPage";
-import ShowPage from "./pages/showPage";
+import ShowesHomePage from "./pages/showPage";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MoviesContextProvider from "./contexts/moviesContext";
@@ -41,7 +42,8 @@ const App = () => {
             <Route path="/reviews/:id" element={<MovieReviewPage />} />
             <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
             <Route path="/person/:id" element={<PersonDetailsPage/>} />
-            <Route path="/show/page/:id" element={<ShowPage/>} />
+            <Route path="/show/page/:id" element={<ShowesHomePage/>} />
+            <Route path="/show/:id/:favorite" element={<ShowDetailsPage />} />
             <Route path="*" element={<Navigate to="/" />} />
             
 

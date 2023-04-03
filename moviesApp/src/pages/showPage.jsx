@@ -32,6 +32,10 @@ const ShowPage = (props) => {
             <PageTemplate
                 title="Discover TV Shows"
                 movies={shows}
+                baseUrl= "/show/"
+                isShow={true}
+                isMovie={false}
+                pageId={id}
                 action={(show) => {
                 //return <AddToFavouritesIcon movie={show} />;
                 return <></>;

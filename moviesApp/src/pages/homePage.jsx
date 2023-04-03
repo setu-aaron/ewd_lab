@@ -59,7 +59,6 @@ const HomePage = (props) => {
     currentPage: page,
     visiblePages: 5,
     lastPage: total_pages,
-    baseUrl: "/movies/page/",
   }
 
 
@@ -68,6 +67,10 @@ const HomePage = (props) => {
       <PageTemplate
         title="Discover Movies"
         movies={displayedMovies}
+        baseUrl="/movies/"
+        isShow={false}
+        isMovie={true}
+        pageId={id}
         action={(movie) => {
           return <AddToFavouritesIcon movie={movie} />;
         }}
