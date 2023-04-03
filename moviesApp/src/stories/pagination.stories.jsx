@@ -18,16 +18,16 @@ function currentPage(){
     return cPage;
 }
 
-let props = {
-    currentPage: currentPage,
-    setCurrentPage: setCurrentPage,
+const paginationProps = {
+    currentPage: 1,
     visiblePages: 5,
-    lastPage: lastPage
-}
+    lastPage: 10,
+    baseUrl: "/movies/page/",
+  }
 
 export const Basic = () =>{
     return (
         <Paginator 
-            props={props} />
+            props={paginationProps} />
     )
 };

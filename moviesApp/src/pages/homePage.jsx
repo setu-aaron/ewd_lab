@@ -60,6 +60,7 @@ const HomePage = (props) => {
     currentPage: page,
     visiblePages: 5,
     lastPage: total_pages,
+    baseUrl: "/movies/page/",
   }
 
 

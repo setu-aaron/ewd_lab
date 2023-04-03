@@ -58,6 +58,7 @@ const UpcomingMoviesPage = (props) => {
     currentPage: page,
     visiblePages: 5,
     lastPage: total_pages,
+    baseUrl: "/movies/upcoming/page/",
   }
 
   return (
