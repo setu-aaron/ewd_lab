@@ -16,7 +16,23 @@
        throw error
     });
   };
-  
+
+  export const getShows = (cPage) => {
+    console.log("API's getShows called with page: ", cPage);
+    const page = cPage.queryKey[1];
+    console.log("API's getShows called with page: ", page);
+    return fetch(
+      `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error(response.json().message);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+       throw error
+    });
+  };
 
   export const getUpcomingMovies = (cPage) => {
     const page = cPage.queryKey[1];
@@ -53,7 +69,26 @@
       throw error
    });
   };
-  
+  export const getShow = (args) => {
+    console.log(args)
+    const [, idPart] = args.queryKey;
+    console.log("ID Part: ", idPart)
+    const { id } = idPart;
+    console.log("ID: ", id)
+    let url = `https://api.themoviedb.org/3/tv/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    console.log("URL: ", url)
+    return fetch(
+      url
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error(response.json().message);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      throw error
+   });
+  };
 
   export const getGenres = async () => {
     return fetch(
@@ -87,7 +122,22 @@
       throw error
    });
   };
+  export const getShowImages = ({ queryKey }) => {
+    const [, idPart] = queryKey;
+    const { id } = idPart;
+    return fetch(
+      `https://api.themoviedb.org/3/tv/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    ).then( (response) => {
+      if (!response.ok) {
+        throw new Error(response.json().message);
+      }
+      return response.json();
   
+    })
+    .catch((error) => {
+      throw error
+   });
+  };
 
   export const getMovieReviews = (id) => {
     return fetch(
@@ -122,7 +172,30 @@
        throw error
     });
   };
+  
+  export const getShowCredits = (args) => {
+    console.log("MC", args)
+    const [, idPart] = args.queryKey;
+    console.log("MC ID Part: ", idPart)
+    const { id } = idPart;
+    console.log("MCID: ", id)
 
+    console.log("Getting Show Credits for: ", id)
+    let url = `https://api.themoviedb.org/3/tv/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    console.log("Movie Credits URL: ", url)
+    return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        console.log("Error calling url: ", {url});
+        throw new Error(response.json().message);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+       throw error
+    });
+  };
+  
   export const getPerson = (args) => {
     const [, idPart] = args.queryKey;
     const { id } = idPart;

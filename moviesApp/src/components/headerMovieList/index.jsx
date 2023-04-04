@@ -15,23 +15,33 @@ const styles = {
   },
 };
 
-const Header = (props ) => {
+const Header = (props) => {
   const title = props.title
-
+  const pageId = props.pageId
+  const baseUrl = props.baseUrl
+  let page = pageId
+  
+  if (pageId === undefined) {
+    page = 1
+    
+  }
+  let nextPage = Number(page) + 1
+  let lastPage = Number(page) - 1  
   return (
     <Paper component="div" sx={styles.root}>
-      <IconButton
-        aria-label="go back"
-      >
-        <ArrowBackIcon color="primary" fontSize="large" />
-      </IconButton>
-
+      {page > 1 ? (
+        <IconButton href={`${baseUrl}page/${lastPage}`} aria-label="go back" >
+          <ArrowBackIcon color="primary" fontSize="large" />
+        </IconButton>
+      ) : (
+        <IconButton aria-label="go back" >
+          <ArrowBackIcon color="disabled" fontSize="large" />
+        </IconButton>
+      )}
       <Typography variant="h4" component="h3">
         {title}
       </Typography>
-      <IconButton
-        aria-label="go forward"
-      >
+      <IconButton href={`${baseUrl}page/${nextPage}`}  aria-label="go forward" >
         <ArrowForwardIcon color="primary" fontSize="large" />
       </IconButton>
     </Paper>

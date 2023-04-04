@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import { CardContent, CardHeader, CardMedia } from "@mui/material";
 import Typography from "@mui/material/Typography";
 const styles = {
-    card: { maxWidth: 750 },
+    card: { maxWidth: 850 },
     media: { height: 600, width: 350 },
     biography: {width: 350},
 }

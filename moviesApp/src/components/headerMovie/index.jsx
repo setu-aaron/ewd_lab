@@ -24,7 +24,6 @@ const styles = {
 
 const MovieHeader = (props) => {
   const movie = props.movie;
-  console.log(movie)
   return (
     <Paper component="div" sx={styles.root}>
       <IconButton aria-label="go back">

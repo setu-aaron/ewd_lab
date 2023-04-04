@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -60,7 +59,6 @@ const HomePage = (props) => {
     currentPage: page,
     visiblePages: 5,
     lastPage: total_pages,
-    baseUrl: "/movies/page/",
   }
 
 
@@ -69,6 +67,10 @@ const HomePage = (props) => {
       <PageTemplate
         title="Discover Movies"
         movies={displayedMovies}
+        baseUrl="/movies/"
+        isShow={false}
+        isMovie={true}
+        pageId={id}
         action={(movie) => {
           return <AddToFavouritesIcon movie={movie} />;
         }}

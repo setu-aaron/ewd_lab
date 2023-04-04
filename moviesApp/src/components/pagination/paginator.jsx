@@ -9,11 +9,10 @@ const styles = {
     }
 
 }
-export default function Paginator(props){
-    console.log("In the paginator", props)
+function Paginator({props, baseUrl}){
     function createButtons() {
-        let current = props.props.currentPage
-        let visible = props.props.visiblePages
+        let current = props.currentPage
+        let visible = props.visiblePages
         let lowEnd = current - Math.floor(visible/2) 
            
         let buttons = []
@@ -27,7 +26,7 @@ export default function Paginator(props){
         else {
             let index = 0
             while(index < visible){
-                if (index + lowEnd <= props.props.lastPage){
+                if (index + lowEnd <= props.lastPage){
                     let label = lowEnd + index
                     buttons.push(label)
                 } else {
@@ -43,32 +42,31 @@ export default function Paginator(props){
     const onNewPage = (newIndex) => {
         if (newIndex === 0){
             newIndex = 1 
-        } else if (newIndex > props.props.lastPage){
-            newIndex = props.props.lastPage
+        } else if (newIndex > props.lastPage){
+            newIndex = props.lastPage
         } 
-        console.log("In the paginator, onNewPage", newIndex)
-        //props.props.setCurrentPage(newIndex)
         return newIndex;
       };
 
     return (
         <Container sx={styles.root}>
-            {props.props.currentPage > 0 ? (
+            {props.currentPage > 0 ? (
                 <>
                
-            <Button href={`${props.props.baseUrl}${onNewPage(props.props.currentPage - 1)}`} variant="contained" onClick={()=>onNewPage(props.props.currentPage - 1)} >Prev</Button>
+            <Button href={`${baseUrl}page/${onNewPage(props.currentPage - 1)}`} variant="contained" onClick={()=>onNewPage(props.currentPage - 1)} >Prev</Button>
             {createButtons().map((b) => {
-                let isCurrent = (b === props.props.currentPage)
+                let isCurrent = (b === props.currentPage)
                 return isCurrent ? (
                    <Button variant="outlined" key={b}>{b}</Button>
                 ) : (
-                    <Button variant="text" key={b} href={`${props.props.baseUrl}${onNewPage(b)}`} >{b}</Button>
+                    <Button variant="text" key={b} href={`${baseUrl}page/${onNewPage(b)}`} >{b}</Button>
                 )
                 })}
-            <Button href={`${props.props.baseUrl}${onNewPage(props.props.currentPage + 1)}`} variant="contained" onClick={()=>onNewPage(props.props.currentPage + 1)} >Next</Button>
+            <Button href={`${baseUrl}page/${onNewPage(props.currentPage + 1)}`} variant="contained" onClick={()=>onNewPage(props.currentPage + 1)} >Next</Button>
              </>
             ) : (<></>)
             }
         </Container>
     )
 }
+export default Paginator;

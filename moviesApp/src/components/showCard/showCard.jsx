@@ -24,38 +24,38 @@ const styles = {
   },
 };
 
-export default function MovieCard({movie, action,baseUrl}) {
+export default function MovieCard({show, action, baseUrl}) {
   const { favourites, addToFavourites, removeFromFavorites } = useContext(MoviesContext);
   
-  if (favourites.find((id) => id === movie.id)) {
-    movie.favourite = true;
-  } else {
-    movie.favourite = false;
-  }
+  // if (favourites.find((id) => id === show.id)) {
+  //   show.favourite = true;
+  // } else {
+  //   show.favourite = false;
+  // }
 
   return (
     <Card sx={styles.card}>
           <CardHeader
             sx={styles.header}
-            avatar={
-              movie.favourite ? (
-                <Avatar sx={styles.avatar}>
-                  <FavoriteIcon />
-                </Avatar>
-              ) : null
-            }
+            // avatar={
+            //   show.favourite ? (
+            //     <Avatar sx={styles.avatar}>
+            //       <FavoriteIcon />
+            //     </Avatar>
+            //   ) : null
+            // }
             title={
               <Typography variant="h5" component="p">
-                {movie.title}{" "}
+                {show.name}{" "}
               </Typography>
             }
           />
-      <Link to={`${baseUrl}${movie.id}/${movie.favourite}`}>
+      <Link to={`${baseUrl}${show.id}/false`}>
       <CardMedia
         sx={styles.media}
         image={
-          movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+          show.poster_path
+            ? `https://image.tmdb.org/t/p/w500/${show.poster_path}`
             : img
         }
       />
@@ -65,20 +65,25 @@ export default function MovieCard({movie, action,baseUrl}) {
           <Grid item xs={6}>
             <Typography variant="h6" component="p">
               <CalendarIcon fontSize="small" />
-              {movie.release_date}
+              {show.first_air_date}
             </Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography variant="h6" component="p">
               <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
+              {"  "} {show.vote_average}{" "}
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6" component="p">
+              Language: {show.original_language}
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
       <CardActions disableSpacing>
-        {action(movie)}
-        <Link to={`${baseUrl}${movie.id}/${movie.favourite}`}>
+        {action(show)}
+        <Link to={`${baseUrl}${show.id}/false`}>
           <Button variant="outlined" size="medium" color="primary">
             More Info ...
           </Button>
