@@ -24,8 +24,8 @@ const ShowCredits = ({ credits }) => {
     console.log("Credits:", credits)
     return (<>
      {credits ? (
-        <Grid container spacing={5} style={{ padding: "15px" }}>
-            <Grid item xs={3} id="castId">
+        <Grid container spacing={1} style={{ padding: "15px" }}>
+            <Grid item xs={6} id="castId">
                 <div sx={styles.gridListRoot}>
                     <h2>Cast</h2>
                         <ImageList cols={1}>
@@ -48,7 +48,7 @@ const ShowCredits = ({ credits }) => {
                         </ImageList>
                 </div>
             </Grid>
-            <Grid item xs={3}
+            <Grid item xs={6}
                 id="crewId">
                 <h2>Crew</h2>
                 <div sx={styles.gridListRoot}>
@@ -76,7 +76,7 @@ const ShowCredits = ({ credits }) => {
             </Grid>
         </Grid>
      ) : (
-            <p>Waiting for movie credits</p>
+            <p>Waiting for credits</p>
      )}
     </>);
 };
