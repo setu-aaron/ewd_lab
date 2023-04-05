@@ -66,6 +66,10 @@ const UpcomingMoviesPage = (props) => {
     <PageTemplate
       title='Upcoming Movies'
       movies={displayedMovies}
+        baseUrl="/movies/"
+        isShow={false}
+        isMovie={true}
+        pageId={id}
       action={(movie)=>{
         return <AddToPlaylistIcon movie={movie}/>
       }}
