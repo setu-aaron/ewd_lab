@@ -144,11 +144,11 @@
     "colId": "history",
     "containerId": "",
     "name": "TVSeriesDetails",
-    "url": "https://api.themoviedb.org/3/tv/82856?api_key=e7ff1babf9d4b0d3a3351ce8d0739b3e",
+    "url": "https://api.themoviedb.org/3/tv/18165?api_key=e7ff1babf9d4b0d3a3351ce8d0739b3e",
     "method": "GET",
     "sortNum": 0,
     "created": "2023-03-18T01:34:02.746Z",
-    "modified": "2023-03-18T01:40:46.608Z",
+    "modified": "2023-04-04T21:04:40.440Z",
     "headers": [],
     "params": [
       {

@@ -11,6 +11,8 @@ import MovieReviewPage from "./pages/movieReviewPage";
 import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import PersonDetailsPage from "./pages/personDetailsPage";
 import ShowesHomePage from "./pages/showPage";
+import ShowSeasonPage from "./pages/showSeasonPage";
+import ShowEpisodePage from "./pages/showEpisodePage";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MoviesContextProvider from "./contexts/moviesContext";
@@ -44,6 +46,8 @@ const App = () => {
             <Route path="/person/:id" element={<PersonDetailsPage/>} />
             <Route path="/show/page/:id" element={<ShowesHomePage/>} />
             <Route path="/show/:id/:favorite" element={<ShowDetailsPage />} />
+            <Route path="/show/:showId/season/:seasonId" element={<ShowSeasonPage />} />
+            <Route path="/show/:showId/season/:seasonId/episode/:episodeId" element={<ShowEpisodePage />} />
             <Route path="*" element={<Navigate to="/" />} />
             
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
+import Card from "@mui/material/Card";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MonetizationIcon from "@mui/icons-material/MonetizationOn";
 import StarRate from "@mui/icons-material/StarRate";
@@ -44,16 +45,56 @@ const ShowDetails = ( {show}) => {
         {show.overview}
       </Typography>
 
-      {/* <Paper component="ul" sx={styles.chipSet}>
+      <Card sx={styles.card}>
+        <Typography variant="h6" component="h3">
+            First Air Date: {show.first_air_date} <br/>
+            Last Air Date: {show.last_air_date}
+        </Typography>
+        {/* <Typography variant="h6" component="h3">
+            Last Episode: {show.last_episode_to_air.name}
+        </Typography>
+        <Typography variant="h6" component="h3">
+            Last Episode Overview: {show.last_episode_to_air.overview}</Typography> */}
+        <Typography variant="h6" component="h3">
+            Number of Seasons: {show.last_episode_to_air.season_number}</Typography>
+        {/* <Typography variant="h6" component="h3">
+            Episode: {show.last_episode_to_air.episode_number}</Typography>
+         */}
+        <Typography variant="h6" component="h3">
+            Number of Episodes: {show.number_of_episodes}</Typography>
+
+        <Typography variant="h6" component="h3">
+            Country of Origin: {show.origin_country[0]}</Typography>
+            
+            <Paper component="ul" sx={styles.chipSet}>
+            <Chip label="Networks" sx={styles.chipLabel} color="primary" />
+            {
+                show.networks.map((network) => (
+                        <Chip sx={styles.chipLabel} label={network.name}  />))
+            }
+            </Paper>
+        
+            <Paper component="ul" sx={styles.chipSet}>
+            <Chip label="Production Companies" sx={styles.chipLabel} color="primary" />
+            {show.production_companies.map((company) => (
+              
+                    <Chip sx={styles.chipLabel}label={company.name}  />
+           
+                ))
+                
+            }</Paper>
+            </Card>
+
+      <Paper component="ul" sx={styles.chipSet}>
         <li>
           <Chip label="Genres" sx={styles.chipLabel} color="primary" />
         </li>
-        {show.genre_ids.map((g) => (
+        {show.genres.map((g) => (
           <li key={g.name}>
             <Chip label={g.name}  />
           </li>
         ))}
-      </Paper> */}
+      </Paper>
       <Paper component="ul" sx={styles.chipSet}>
         {/* <Chip icon={<AccessTimeIcon />} label={`${show.runtime} min.`} />
         <Chip

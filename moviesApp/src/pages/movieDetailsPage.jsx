@@ -33,8 +33,7 @@ const MovieDetailsPage = (props) => {
     console.log("MovidDetailspage: credits error: ", creditsError.message)
     return <h1>{creditsError.message}</h1>;
   }
-
-
+  
   return (
     <>
       {movie ? (
