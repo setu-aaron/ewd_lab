@@ -172,6 +172,40 @@
        throw error
     });
   };
+
+  export const getEpisodeDetails = (args) => {
+    const [, showId, seasonId, episodeId] = args.queryKey;
+    let url = `https://api.themoviedb.org/3/tv/${showId}/season/${seasonId}/episode/${episodeId}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    console.log("Movie Credits URL: ", url)
+    return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        console.log("Error calling url: ", {url});
+        throw new Error(response.json().message);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+       throw error
+    });
+  }
+  
+  export const getSeasonDetails = (args) => {
+    const [, showId, seasonId] = args.queryKey;
+    let url = `https://api.themoviedb.org/3/tv/${showId}/season/${seasonId}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    console.log("Movie Credits URL: ", url)
+    return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        console.log("Error calling url: ", {url});
+        throw new Error(response.json().message);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+       throw error
+    });
+  }
   
   export const getShowCredits = (args) => {
     console.log("MC", args)

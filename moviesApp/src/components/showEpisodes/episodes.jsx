@@ -32,7 +32,7 @@ const Episdoes = ( {episodes} ) => {
                     <>
                     <br/>
                     <Card sx={styles.card}>
-                    <Link to={`/show/episode${season.id}`}><b>{season.name}</b></Link> <br/>
+                    <Link to={`/show/${episodes.id}/season/${season.season_number}`}><b>{season.name}</b></Link> <br/>
                         Air Date: {season.air_date}<br/>
                         Episodes in {season.name}: {season.episode_count}<br/>
                         Overview: {season.overview}<br/>
