@@ -6,6 +6,7 @@ const MoviesContextProvider = (props) => {
   const [favourites, setFavourites] = useState([]);
   const [myReviews, setMyReviews] = useState({});
   const [playlist, setPlaylist] = useState([]);
+  const [session, setSession] = useState({});
 
   const addToFavourites = (movie) => {
     let updatedFavourites = [...favourites];
@@ -14,6 +15,19 @@ const MoviesContextProvider = (props) => {
     }
     setFavourites(updatedFavourites);
   };
+
+  const retrieveSession = () => {
+    return session;
+  };
+
+  const addSession = (session) => {
+    setSession(session);
+  };
+
+  const removeSession = () => {
+    setSession(null);
+  };
+
 
   // We will use this function in a later section
   const removeFromFavourites = (movie) => {
@@ -45,6 +59,9 @@ const MoviesContextProvider = (props) => {
         addReview,
         addToPlayList,
         logPlaylist,
+        retrieveSession,
+        addSession,
+        removeSession,
       }}
     >
       {props.children}
