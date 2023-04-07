@@ -17,11 +17,13 @@ const MoviesContextProvider = (props) => {
   };
 
   const retrieveSession = () => {
+    console.log("Movie Context retrieve session", session)
     return session;
   };
 
-  const addSession = (session) => {
-    setSession(session);
+  const addSession = (_session) => {
+    console.log("Movie Context Adding session", _session)
+    setSession(_session);
   };
 
   const removeSession = () => {

@@ -20,6 +20,7 @@ import ShowEpisodePage from "./pages/showEpisodePage";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MoviesContextProvider from "./contexts/moviesContext";
+import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 
 
 const queryClient = new QueryClient({
@@ -41,7 +42,6 @@ const App = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { _session } }) => {
       if (_session === undefined){
-        console.log("get session index session null")
       } else {
         setSession(_session)
       }
@@ -68,7 +68,12 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage session={session}/>} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/account" element={<AccountPage/>} />
+            <Route path="/accounts" element={<AccountPage />} />
+            <Route path="/account" element={
+              <ProtectedRoute>
+                <AccountPage />
+              </ProtectedRoute>
+            } />
             <Route path="/movies/page/:id" element={<HomePage />} />
             <Route path="/movies/:id/:favorite" element={<MoviePage />} />
             <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />

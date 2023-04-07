@@ -1,5 +1,5 @@
 import React from "react";
-import {useState, useEffect} from "react";
+import {useContext, useState, useEffect} from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -8,6 +8,7 @@ import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 import { supabase } from "../supabaseClient";
+import { MoviesContext } from "../contexts/moviesContext";
 
 import MovieFilterUI, {
   titleFilter,
@@ -28,6 +29,7 @@ const genreFiltering = {
 const HomePage = (props) => {
   const { id } = useParams();
   const [session, setSession] = useState(null);
+  const {addSession} = useContext(MoviesContext);
 
   const { data, error, isLoading, isError } = useQuery(["discover", id], getMovies);
 
@@ -35,6 +37,7 @@ const HomePage = (props) => {
     const {data: { session },} = await supabase.auth.getSession()   
     if (session){
       setSession(session);
+      addSession(session.access_token);
     } else {
       console.log("Home Page no session data");
     }
