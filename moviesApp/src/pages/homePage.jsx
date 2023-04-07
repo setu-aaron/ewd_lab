@@ -1,4 +1,5 @@
 import React from "react";
+import {useContext, useState, useEffect} from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -6,7 +7,8 @@ import Spinner from "../components/spinner";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
-
+import { supabase } from "../supabaseClient";
+import { MoviesContext } from "../contexts/moviesContext";
 
 import MovieFilterUI, {
   titleFilter,
@@ -26,8 +28,27 @@ const genreFiltering = {
 
 const HomePage = (props) => {
   const { id } = useParams();
+  const [session, setSession] = useState(null);
+  const {addSession} = useContext(MoviesContext);
 
   const { data, error, isLoading, isError } = useQuery(["discover", id], getMovies);
+
+  async function retrieveSession() {
+    const {data: { session },} = await supabase.auth.getSession()   
+    if (session){
+      setSession(session);
+      addSession(session.access_token);
+    } else {
+      console.log("Home Page no session data");
+    }
+  }
+
+  useEffect(() => {
+    if (session === null) {
+      console.log("Home page retrieve session")
+      retrieveSession();
+    } 
+  }, [session]);
 
 
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
@@ -61,9 +82,12 @@ const HomePage = (props) => {
     lastPage: total_pages,
   }
 
-
   return (
     <>
+      { 
+        session === null ? <h2>null</h2> : <h2>{session.user.email}</h2>
+      }
+      
       <PageTemplate
         title="Discover Movies"
         movies={displayedMovies}

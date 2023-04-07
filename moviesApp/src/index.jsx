@@ -1,7 +1,11 @@
 import React from "react";
+import { useEffect, useState, useContext } from "react";
+import { supabase } from './supabaseClient';
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Navigate, Routes, Link } from "react-router-dom";
 import SiteHeader from "./components/siteHeader";
+import LoginPage from "./pages/loginPage"
+import AccountPage from "./pages/accountPage"
 import HomePage from "./pages/homePage";
 import UpcomingMoviePage from "./pages/upcomingMoviesPage";
 import MoviePage from "./pages/movieDetailsPage";
@@ -16,6 +20,7 @@ import ShowEpisodePage from "./pages/showEpisodePage";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MoviesContextProvider from "./contexts/moviesContext";
+import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 
 
 const queryClient = new QueryClient({
@@ -28,14 +33,47 @@ const queryClient = new QueryClient({
   },
 });
 
+
+
+
 const App = () => {
+  const [session, setSession] = useState(null)
+  
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { _session } }) => {
+      if (_session === undefined){
+      } else {
+        setSession(_session)
+      }
+      
+    })
+  
+    supabase.auth.onAuthStateChange((_event, _session) => {
+      if (_session === undefined){
+        console.log("index session null")
+      } else {
+        console.log("auth state changed index session authStateChanged", _session)
+        setSession(_session)
+      }
+    })
+  }, [])
+
+
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <SiteHeader />
         <MoviesContextProvider>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage session={session}/>} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/accounts" element={<AccountPage />} />
+            <Route path="/account" element={
+              <ProtectedRoute>
+                <AccountPage />
+              </ProtectedRoute>
+            } />
             <Route path="/movies/page/:id" element={<HomePage />} />
             <Route path="/movies/:id/:favorite" element={<MoviePage />} />
             <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
@@ -49,8 +87,6 @@ const App = () => {
             <Route path="/show/:showId/season/:seasonId" element={<ShowSeasonPage />} />
             <Route path="/show/:showId/season/:seasonId/episode/:episodeId" element={<ShowEpisodePage />} />
             <Route path="*" element={<Navigate to="/" />} />
-            
-
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>

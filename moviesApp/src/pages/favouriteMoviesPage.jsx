@@ -28,7 +28,8 @@ export const genreFiltering = {
 };
 
 const FavouriteMoviesPage = () => {
-  const { favourites: movieIds } = useContext(MoviesContext);
+  const { favourites: movieIds, addSession } = useContext(MoviesContext);
+  
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
@@ -50,6 +51,9 @@ const FavouriteMoviesPage = () => {
 
   if (isLoading) {
     return <Spinner />;
+  } else {
+    const session = addSession();
+    console.log("Favourite Movies Page", session)
   }
 
   const allFavourites = favouriteMovieQueries.map((q) => q.data);
@@ -58,7 +62,8 @@ const FavouriteMoviesPage = () => {
     : [];
 
   const toDo = () => true;
-
+  //const session = addSession();
+ // console.log("Favourite Movies Page", session)
   const changeFilterValues = (type, value) => {
     console.log("changing values", type, value)
     const changedFilter = { name: type, value: value };

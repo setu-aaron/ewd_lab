@@ -42,10 +42,10 @@ const ShowDetailsPage = (props) => {
         <PageTemplate show={show}>
             <ShowDetails show={show} />
             <Grid container>
-              <Grid item xs={12} sm={6} md={4} lg={6} xl={2}>
+              <Grid item xs={12} sm={6} md={4} lg={6} xl={6}>
                 <ShowCredits credits={credits} />
               </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={6} xl={2}>
+              <Grid item xs={12} sm={6} md={4} lg={6} xl={6}>
                 <ShowEpisodes episodes={show} />
               </Grid>
             </Grid>
