@@ -26,13 +26,11 @@ const styles = {
 
 export default function MovieCard({movie, action,baseUrl}) {
   const { favourites, addToFavourites, removeFromFavorites } = useContext(MoviesContext);
-  
   if (favourites.find((id) => id === movie.id)) {
     movie.favourite = true;
   } else {
     movie.favourite = false;
   }
-
   return (
     <Card sx={styles.card}>
           <CardHeader

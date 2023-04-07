@@ -14,7 +14,7 @@ import FavouriteMoviesPage from "./pages/favouriteMoviesPage";
 import MovieReviewPage from "./pages/movieReviewPage";
 import AddMovieReviewPage from "./pages/addMovieReviewPage";
 import PersonDetailsPage from "./pages/personDetailsPage";
-import ShowesHomePage from "./pages/showPage";
+import ShowsHomePage from "./pages/showPage";
 import ShowSeasonPage from "./pages/showSeasonPage";
 import ShowEpisodePage from "./pages/showEpisodePage";
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -82,7 +82,7 @@ const App = () => {
             <Route path="/reviews/:id" element={<MovieReviewPage />} />
             <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
             <Route path="/person/:id" element={<PersonDetailsPage/>} />
-            <Route path="/show/page/:id" element={<ShowesHomePage/>} />
+            <Route path="/show/page/:id" element={<ShowsHomePage/>} />
             <Route path="/show/:id/:favorite" element={<ShowDetailsPage />} />
             <Route path="/show/:showId/season/:seasonId" element={<ShowSeasonPage />} />
             <Route path="/show/:showId/season/:seasonId/episode/:episodeId" element={<ShowEpisodePage />} />

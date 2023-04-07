@@ -4,10 +4,19 @@ export const MoviesContext = React.createContext(null);
 
 const MoviesContextProvider = (props) => {
   const [favourites, setFavourites] = useState([]);
+  const [tvFavourites, setTvFavourites] = useState([]);
   const [myReviews, setMyReviews] = useState({});
   const [playlist, setPlaylist] = useState([]);
   const [session, setSession] = useState({});
 
+  const addToTVFavourites = (show) => {
+    let updatedFavourites = [...tvFavourites];
+    if (!tvFavourites.includes(show.id)) {
+      updatedFavourites.push(show.id);
+    }
+    console.log("addToTVFavourites", updatedFavourites)
+    setTvFavourites(updatedFavourites);
+  };
   const addToFavourites = (movie) => {
     let updatedFavourites = [...favourites];
     if (!favourites.includes(movie.id)) {
@@ -16,24 +25,15 @@ const MoviesContextProvider = (props) => {
     setFavourites(updatedFavourites);
   };
 
-  const retrieveSession = () => {
-    console.log("Movie Context retrieve session", session)
-    return session;
-  };
-
-  const addSession = (_session) => {
-    console.log("Movie Context Adding session", _session)
-    setSession(_session);
-  };
-
-  const removeSession = () => {
-    setSession(null);
-  };
-
 
   // We will use this function in a later section
   const removeFromFavourites = (movie) => {
     setFavourites(favourites.filter((mId) => mId !== movie.id));
+  };
+
+  const removeFromTVFavourites = (show) => {
+    console.log("context removeFromTVFavourites", show)
+    setTvFavourites(tvFavourites.filter((mId) => mId !== show.id));
   };
 
   const addReview = (movie, review) => {   
@@ -56,14 +56,14 @@ const MoviesContextProvider = (props) => {
     <MoviesContext.Provider
       value={{
         favourites,
+        tvFavourites,
         addToFavourites,
+        addToTVFavourites,
         removeFromFavourites,
+        removeFromTVFavourites,
         addReview,
         addToPlayList,
         logPlaylist,
-        retrieveSession,
-        addSession,
-        removeSession,
       }}
     >
       {props.children}

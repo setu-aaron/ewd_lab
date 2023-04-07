@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { getShows } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import PageTemplate from "../components/templateMovieListPage";
+import AddToFavouritesTVIcon from "../components/cardIcons/addToTVFavourites";
 
 
 
@@ -31,14 +32,14 @@ const ShowPage = (props) => {
         <div>
             <PageTemplate
                 title="Discover TV Shows"
-                movies={shows}
+                shows={shows}
                 baseUrl= "/show/"
                 isShow={true}
                 isMovie={false}
                 pageId={id}
-                action={(show) => {
-                //return <AddToFavouritesIcon movie={show} />;
-                return <></>;
+                tvActions={(show) => {
+                return <AddToFavouritesTVIcon show={show} />;
+                //return <></>;
                 }}
                 paginationProps={paginationProps}
             />

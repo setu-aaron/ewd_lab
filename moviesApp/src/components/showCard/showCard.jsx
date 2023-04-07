@@ -25,25 +25,25 @@ const styles = {
 };
 
 export default function MovieCard({show, action, baseUrl}) {
-  const { favourites, addToFavourites, removeFromFavorites } = useContext(MoviesContext);
+  const { tvFavourites, addToTvFavourites, removeFromTvFavorites } = useContext(MoviesContext);
   
-  // if (favourites.find((id) => id === show.id)) {
-  //   show.favourite = true;
-  // } else {
-  //   show.favourite = false;
-  // }
+  if (tvFavourites.find((id) => id === show.id)) {
+    show.favourite = true;
+  } else {
+    show.favourite = false;
+  }
 
   return (
     <Card sx={styles.card}>
           <CardHeader
             sx={styles.header}
-            // avatar={
-            //   show.favourite ? (
-            //     <Avatar sx={styles.avatar}>
-            //       <FavoriteIcon />
-            //     </Avatar>
-            //   ) : null
-            // }
+            avatar={
+              show.favourite ? (
+                <Avatar sx={styles.avatar}>
+                  <FavoriteIcon />
+                </Avatar>
+              ) : null
+            }
             title={
               <Typography variant="h5" component="p">
                 {show.name}{" "}

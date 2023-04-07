@@ -2,11 +2,12 @@ import React, { useContext } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
-import { getMovie } from "../api/tmdb-api";
+import { getMovie, getShow } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter } from "../components/movieFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
+import RemoveFromTVFavourites from "../components/cardIcons/removeFromTVFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
 
 const titleFiltering = {
@@ -28,7 +29,7 @@ export const genreFiltering = {
 };
 
 const FavouriteMoviesPage = () => {
-  const { favourites: movieIds, addSession } = useContext(MoviesContext);
+  const { favourites: movieIds, tvFavourites: showIds } = useContext(MoviesContext);
   
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
@@ -46,14 +47,26 @@ const FavouriteMoviesPage = () => {
       };
     })
   );
+
+
   // Check if any of the parallel queries are still loading.
   const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
 
-  if (isLoading) {
+  const favouriteTVShowQueries = useQueries(
+    showIds.map((showId) => {
+      return {
+        queryKey: ["tv", { id: showId }],
+        queryFn: getShow,
+      };  
+    })  
+  );
+
+  const isFavouritesLoading = favouriteTVShowQueries.find((m) => m.isLoading === true);
+
+  if (isLoading || isFavouritesLoading) {
     return <Spinner />;
   } else {
-    const session = addSession();
-    console.log("Favourite Movies Page", session)
+    console.log("Favourite Movies Page")
   }
 
   const allFavourites = favouriteMovieQueries.map((q) => q.data);
@@ -61,9 +74,12 @@ const FavouriteMoviesPage = () => {
     ? filterFunction(allFavourites)
     : [];
 
+  const allShowFavourites = favouriteTVShowQueries.map((q) => q.data);
+  const displayShows = allShowFavourites
+    // ? filterFunction(allShowFavourites)
+    // : [];
+
   const toDo = () => true;
-  //const session = addSession();
- // console.log("Favourite Movies Page", session)
   const changeFilterValues = (type, value) => {
     console.log("changing values", type, value)
     const changedFilter = { name: type, value: value };
@@ -83,11 +99,21 @@ const FavouriteMoviesPage = () => {
       <PageTemplate
         title="Favourite Movies"
         movies={displayMovies}
+        shows={displayShows}
+        isMovie={true}
+        isShow={true}
         action={(movie) => {
           return (
             <>
               <RemoveFromFavourites movie={movie} />
               <WriteReview movie={movie} />
+            </>
+          );
+        }}
+        tvActions={(show) => {
+          return (
+            <>
+              <RemoveFromTVFavourites show={show} />
             </>
           );
         }}
