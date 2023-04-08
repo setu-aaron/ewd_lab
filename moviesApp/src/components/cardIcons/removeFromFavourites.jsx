@@ -1,11 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { MoviesContext } from "../../contexts/moviesContext";
 import { supabase } from "../../supabaseClient";
 
 const RemoveFromFavouritesIcon = ({ movie, setNeedsQuery }) => {
-  const context = useContext(MoviesContext);
   const [needsDelete, setNeedsDelete] = React.useState(false);
 
   useEffect(() => {
@@ -26,7 +24,7 @@ const RemoveFromFavouritesIcon = ({ movie, setNeedsQuery }) => {
       .delete()
       .eq('movieId', movie.id)
 
-    setNeedsQuery(true);
+      setNeedsQuery(true);
     } 
 
     if (needsDelete){

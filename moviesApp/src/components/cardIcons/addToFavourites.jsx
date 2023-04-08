@@ -1,11 +1,9 @@
-import React, { useContext, useEffect } from "react";
-import { MoviesContext } from "../../contexts/moviesContext";
+import React, { useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { supabase } from "../../supabaseClient";
 
 const AddToFavouritesIcon =  ({ movie, setFavoriteChanged }) => {
-  const context = useContext(MoviesContext);
   const [needsSave, setNeedsSave] = React.useState(false);
   useEffect(() => {
     console.log("AF useEffect")
@@ -36,11 +34,8 @@ const AddToFavouritesIcon =  ({ movie, setFavoriteChanged }) => {
     }
   }, [needsSave])
 
-
-
   const onUserSelect = (e) => {
     e.preventDefault();
-    context.addToFavourites(movie);
     setNeedsSave(true)
   };
   return (

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import PageTemplate from "../components/templateMovieListPage";
-import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
 import { getMovie, getShow } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
@@ -30,10 +29,10 @@ export const genreFiltering = {
 };
 
 const FavouriteMoviesPage = () => {
-  //const { favourites: movieIds, tvFavourites: showIds } = useContext(MoviesContext);
   const [ needsQuery, setNeedsQuery ] = useState(true);
   const [isQuerying, setIsQuerying] = useState(true);
   const [movieIds, setMovieIds] = useState([]);
+  const [showIds, setShowIds] = useState([]);
   useEffect(() => {
     console.log("FavPage useEffect")
     async function queryTable() {
@@ -52,6 +51,14 @@ const FavouriteMoviesPage = () => {
       .eq('userId', session.user.id)
 
       setMovieIds(favoriteMovies.map((m) => m.movieId));
+
+      let { data: favoriteShows, showError } = await supabase
+      .from('favoriteShows')
+      .select('showId')
+      .eq('userId', session.user.id)
+
+      setShowIds(favoriteShows.map((m) => m.showId));
+
       setIsQuerying(false);
     }
 
@@ -84,20 +91,21 @@ const FavouriteMoviesPage = () => {
   // Check if any of the parallel queries are still loading.
    const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
 
-  // const favouriteTVShowQueries = useQueries(
-  //   showIds.map((showId) => {
-  //     return {
-  //       queryKey: ["tv", { id: showId }],
-  //       queryFn: getShow,
-  //     };  
-  //   })  
-  // );
+  const favouriteTVShowQueries = useQueries(
+    showIds.map((showId) => {
+      return {
+        queryKey: ["tv", { id: showId }],
+        queryFn: getShow,
+      };  
+    })  
+  );
 
-  // const isFavouritesLoading = favouriteTVShowQueries.find((m) => m.isLoading === true);
+  const isFavouritesLoading = favouriteTVShowQueries.find((m) => m.isLoading === true);
 
-  //if (isLoading || isFavouritesLoading) {
-    if (isLoading) {
+  if (isLoading || isFavouritesLoading) {
+    
     return <Spinner />;
+    
   } else {
     console.log("Favourite Movies Page")
   }
@@ -107,21 +115,22 @@ const FavouriteMoviesPage = () => {
     ? filterFunction(allFavourites)
     : [];
 
-  // const allShowFavourites = favouriteTVShowQueries.map((q) => q.data);
-  // const displayShows = allShowFavourites
+  const allShowFavourites = favouriteTVShowQueries.map((q) => q.data);
+  const displayShows = allShowFavourites
     // ? filterFunction(allShowFavourites)
     // : [];
 
-  const toDo = () => true;
-  const changeFilterValues = (type, value) => {
-    console.log("changing values", type, value)
-    const changedFilter = { name: type, value: value };
-    const updatedFilterSet =
-      type === "title"
-        ? [changedFilter, filterValues[1]]
-        : [filterValues[0], changedFilter];
-    setFilterValues(updatedFilterSet);
-  };
+  // const toDo = () => true;
+  // const changeFilterValues = (type, value) => {
+  //   console.log("changing values", type, value)
+  //   const changedFilter = { name: type, value: value };
+  //   const updatedFilterSet =
+  //     type === "title"
+  //       ? [changedFilter, filterValues[1]]
+  //       : [filterValues[0], changedFilter];
+  //   setFilterValues(updatedFilterSet);
+  // };
+
   const paginationProps = {
     currentPage: 0,
     visiblePages: 0,
@@ -132,9 +141,9 @@ const FavouriteMoviesPage = () => {
       <PageTemplate
         title="Favourite Movies"
         movies={displayMovies}
-        //shows={displayShows}
+        shows={displayShows}
         isMovie={true}
-        isShow={false}
+        isShow={true}
         action={(movie) => {
           return (
             <>
