@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
@@ -9,6 +9,7 @@ import MovieFilterUI, { titleFilter } from "../components/movieFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import RemoveFromTVFavourites from "../components/cardIcons/removeFromTVFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
+import { supabase } from "../supabaseClient";
 
 const titleFiltering = {
   name: "title",
@@ -29,17 +30,48 @@ export const genreFiltering = {
 };
 
 const FavouriteMoviesPage = () => {
-  const { favourites: movieIds, tvFavourites: showIds } = useContext(MoviesContext);
-  
-  const { filterValues, setFilterValues, filterFunction } = useFiltering(
-    [],
-    [titleFiltering, genreFiltering]
-  );
+  //const { favourites: movieIds, tvFavourites: showIds } = useContext(MoviesContext);
+  const [ needsQuery, setNeedsQuery ] = useState(true);
+  const [isQuerying, setIsQuerying] = useState(true);
+  const [movieIds, setMovieIds] = useState([]);
+  useEffect(() => {
+    console.log("FavPage useEffect")
+    async function queryTable() {
+      console.log("FavPage: Loading is true");
+      const {data: { session },} = await supabase.auth.getSession()   
+      if (session){
+        console.log("FavPage: session: ", session)
+      } else {
+        console.log("FavPage: session is null");
+      }
+      console.log("FavPage: User ID is: ", session.user.id)
+
+      let { data: favoriteMovies, error } = await supabase
+      .from('favoriteMovies')
+      .select('movieId')
+      .eq('userId', session.user.id)
+
+      setMovieIds(favoriteMovies.map((m) => m.movieId));
+      setIsQuerying(false);
+    }
+
+    if (needsQuery){
+      console.log("FavPage: needs query ");
+      queryTable();
+      setNeedsQuery(false);
+      setIsQuerying(true);
+    }
+  }, [needsQuery])
+
+    const { filterValues, setFilterValues, filterFunction } = useFiltering(
+      [],
+      [titleFiltering, genreFiltering]
+    );
+
 
   // Create an array of queries and run them in parallel.
   const favouriteMovieQueries = useQueries(
     movieIds.map((movieId) => {
-
     console.log("getting details on favorites", movieId)
       return {
         queryKey: ["movie", { id: movieId }],
@@ -50,20 +82,21 @@ const FavouriteMoviesPage = () => {
 
 
   // Check if any of the parallel queries are still loading.
-  const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
+   const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
 
-  const favouriteTVShowQueries = useQueries(
-    showIds.map((showId) => {
-      return {
-        queryKey: ["tv", { id: showId }],
-        queryFn: getShow,
-      };  
-    })  
-  );
+  // const favouriteTVShowQueries = useQueries(
+  //   showIds.map((showId) => {
+  //     return {
+  //       queryKey: ["tv", { id: showId }],
+  //       queryFn: getShow,
+  //     };  
+  //   })  
+  // );
 
-  const isFavouritesLoading = favouriteTVShowQueries.find((m) => m.isLoading === true);
+  // const isFavouritesLoading = favouriteTVShowQueries.find((m) => m.isLoading === true);
 
-  if (isLoading || isFavouritesLoading) {
+  //if (isLoading || isFavouritesLoading) {
+    if (isLoading) {
     return <Spinner />;
   } else {
     console.log("Favourite Movies Page")
@@ -74,8 +107,8 @@ const FavouriteMoviesPage = () => {
     ? filterFunction(allFavourites)
     : [];
 
-  const allShowFavourites = favouriteTVShowQueries.map((q) => q.data);
-  const displayShows = allShowFavourites
+  // const allShowFavourites = favouriteTVShowQueries.map((q) => q.data);
+  // const displayShows = allShowFavourites
     // ? filterFunction(allShowFavourites)
     // : [];
 
@@ -99,13 +132,13 @@ const FavouriteMoviesPage = () => {
       <PageTemplate
         title="Favourite Movies"
         movies={displayMovies}
-        shows={displayShows}
+        //shows={displayShows}
         isMovie={true}
-        isShow={true}
+        isShow={false}
         action={(movie) => {
           return (
             <>
-              <RemoveFromFavourites movie={movie} />
+              <RemoveFromFavourites movie={movie} setNeedsQuery={setNeedsQuery} />
               <WriteReview movie={movie} />
             </>
           );
@@ -113,7 +146,7 @@ const FavouriteMoviesPage = () => {
         tvActions={(show) => {
           return (
             <>
-              <RemoveFromTVFavourites show={show} />
+              <RemoveFromTVFavourites show={show} setNeedsQuery={setNeedsQuery} />
             </>
           );
         }}

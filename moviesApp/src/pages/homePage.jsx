@@ -26,13 +26,21 @@ const genreFiltering = {
 
 const HomePage = (props) => {
   const { id } = useParams();
-
+  const [favoriteChanged, setFavoriteChanged] = useState(false);
   const { data, error, isLoading, isError } = useQuery(["discover", id], getMovies);
 
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
   );
+
+  useEffect(() => {
+    console.log("Home Page favoriteChanged: ", favoriteChanged);
+    if (favoriteChanged) {
+      console.log("Home Page: favoriteChanged is true setting to false");
+      setFavoriteChanged(false);
+    }
+  }, [favoriteChanged]);
 
   if (isLoading) {
     return <Spinner />;
@@ -70,9 +78,10 @@ const HomePage = (props) => {
         isMovie={true}
         pageId={id}
         action={(movie) => {
-          return <AddToFavouritesIcon movie={movie} />;
+          return <AddToFavouritesIcon movie={movie} setFavoriteChanged={setFavoriteChanged} />;
         }}
         paginationProps={paginationProps}
+        favoriteChanged={favoriteChanged}
       />
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}

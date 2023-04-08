@@ -11,23 +11,7 @@ const styles = {
   }
 };
 
-function MovieListPageTemplate({ movies, shows, baseUrl, isShow, isMovie, pageId, title, action, tvActions, paginationProps }) {
-  // if (movies === undefined) {
-  //   isMovie = false;
-  // } else {
-  //   isMovie = true;
-  //   console.log("MovieListPageTemplate movies", movies.length);
-  // }
-  // if (shows === undefined){
-  //   isShow = false;
-  // } else {
-  //   isShow = true;
-  //   console.log("MovieListPageTemplate shows", shows.length);
-  // }
-  
-  console.log("MovieListPageTemplate movies", movies);
-  console.log("MovieListPageTemplate shows", shows);
-  
+function MovieListPageTemplate({ movies, shows, baseUrl, isShow, isMovie, pageId, title, action, tvActions, paginationProps,favoriteChanged }) { 
   return (
     <>
       <Grid container sx={styles.root}spacing={5}>
@@ -43,7 +27,8 @@ function MovieListPageTemplate({ movies, shows, baseUrl, isShow, isMovie, pageId
             movies={movies}
             baseUrl={/movies/}
             isShow={false}
-            isMovie={true}/>
+            isMovie={true}
+            favoriteChanged={favoriteChanged}/>
         </Grid>
         ):(
           <></>
