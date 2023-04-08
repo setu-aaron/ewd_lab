@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getShows } from "../api/tmdb-api";
@@ -10,6 +10,8 @@ import AddToFavouritesTVIcon from "../components/cardIcons/addToTVFavourites";
 
 const ShowPage = (props) => {
     const { id } = useParams();
+    const [favoriteChanged, setFavoriteChanged] = useState(false);
+
     const { data, error, isLoading, isError } = useQuery(["discoverShows", id], getShows);
     if (isLoading) {
         return <Spinner />;
@@ -22,7 +24,7 @@ const ShowPage = (props) => {
     const shows = data ? data.results : [];
     console.log(shows)
     const {total_pages, page, total_results} = data;
-    //const displayedShows = filterFunction(shows);
+    
     const paginationProps = {
         currentPage: page,
         visiblePages: 5,
@@ -38,10 +40,10 @@ const ShowPage = (props) => {
                 isMovie={false}
                 pageId={id}
                 tvActions={(show) => {
-                return <AddToFavouritesTVIcon show={show} />;
-                //return <></>;
+                return <AddToFavouritesTVIcon show={show} setFavoriteChanged={setFavoriteChanged}/>;
                 }}
                 paginationProps={paginationProps}
+                favoriteChanged={favoriteChanged}
             />
         </div>
     );

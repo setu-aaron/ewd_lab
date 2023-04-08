@@ -12,6 +12,8 @@ const styles = {
 };
 
 function MovieListPageTemplate({ movies, shows, baseUrl, isShow, isMovie, pageId, title, action, tvActions, paginationProps,favoriteChanged }) { 
+  console.log("Movie List Page Template: isMovie: ", isMovie, movies);
+  console.log("Movie List Page Template: isShow: ", isShow, shows);
   return (
     <>
       <Grid container sx={styles.root}spacing={5}>
@@ -41,7 +43,8 @@ function MovieListPageTemplate({ movies, shows, baseUrl, isShow, isMovie, pageId
                 movies={shows}
                 baseUrl={/show/}
                 isShow={true}
-                isMovie={false}/>
+                isMovie={false}
+                favoriteChanged={favoriteChanged}/>
           </Grid>
         ):(
           <></>

@@ -13,8 +13,6 @@ import Grid from "@mui/material/Grid";
 import img from '../../images/film-poster-placeholder.png'
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import { MoviesContext } from "../../contexts/moviesContext";
-import { supabase } from "../../supabaseClient";
 
 
 const styles = {
@@ -25,58 +23,16 @@ const styles = {
   },
 };
 
-export default function MovieCard({movie, action,baseUrl, favoriteChanged}) {
+export default function MovieCard({movie, action,baseUrl, favorites}) {
   //const { favourites} = useContext(MoviesContext);
-  const [favourites, setFavourites] = useState([]);
-  const [ needsQuery, setNeedsQuery ] = useState(true);
-  const [isQuerying, setIsQuerying] = useState(true);
   //console.log("MC: movie: ", movie.title)
   //console.log("MC: favoriteChanged: ", favoriteChanged)
-  useEffect(() => {
-    //console.log("MC useEffect")
-    async function queryTable() {
-      //console.log("MC: Loading is true");
-      const {data: { session },} = await supabase.auth.getSession()   
-      if (session){
-        //console.log("MC: session: ", session)
-      } else {
-        //console.log("MC: session is null");
-      }
-      //console.log("MC: User ID is: ", session.user.id)
-
-      console.log("MC: calling queryTable");
-      let { data: favoriteMovies, error } = await supabase
-      .from('favoriteMovies')
-      .select('movieId')
-      .eq('userId', session.user.id)
-
-      setFavourites(favoriteMovies.map((m) => m.movieId));
-      setIsQuerying(false);
-    }
-
-    if (needsQuery){
-      //console.log("MC: needs query ");
-      queryTable();
-      setNeedsQuery(false);
-      setIsQuerying(true);
-    }
-  }, [needsQuery])
-
-  useEffect(() => {
-    if (favoriteChanged){
-      setNeedsQuery(true);
-    }
-  }, [favoriteChanged])
   
-  if (favourites.find((id) => id === movie.id)) {
+  if (favorites.find((id) => id === movie.id)) {
     movie.favourite = true;
-    console.log("MC: movie is favourite: ", movie.title)
-
   } else {
     movie.favourite = false;
   }
-  
-
 
   return (
     <Card sx={styles.card}>

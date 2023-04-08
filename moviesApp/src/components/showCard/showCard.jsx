@@ -13,7 +13,6 @@ import Grid from "@mui/material/Grid";
 import img from '../../images/film-poster-placeholder.png'
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import { MoviesContext } from "../../contexts/moviesContext";
 
 
 const styles = {
@@ -24,9 +23,8 @@ const styles = {
   },
 };
 
-export default function MovieCard({show, action, baseUrl}) {
-  const { tvFavourites, addToTvFavourites, removeFromTvFavorites } = useContext(MoviesContext);
-  
+export default function MovieCard({show, action, baseUrl, tvFavourites}) { 
+  console.log("ShowCard: show: favorites", tvFavourites) 
   if (tvFavourites.find((id) => id === show.id)) {
     show.favourite = true;
   } else {
