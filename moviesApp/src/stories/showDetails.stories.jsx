@@ -1,5 +1,5 @@
 import React from "react";
-import SampleShow from "./dataSampleShow";
+import SampleShow from "./dataShowDetails";
 import ShowDetails from "../components/showDetails/showDetails";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "../contexts/moviesContext";

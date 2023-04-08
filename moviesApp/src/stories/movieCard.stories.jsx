@@ -21,6 +21,7 @@ export const Basic = () => {
       movie={SampleMovie}
       action={(movie) => <AddToFavouritesIcon movie={movie} />}
       taging={(movie) => null}
+      favorites={[1]}
     />
   );
 };
@@ -33,6 +34,7 @@ export const Exceptional = () => {
       movie={sampleNoPoster}
       action={(movie) => <AddToFavouritesIcon movie={movie} />}
       taging={(movie) => null}
+      favorites={[1]}
     />
   );
 };

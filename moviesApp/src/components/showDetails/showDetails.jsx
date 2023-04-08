@@ -50,16 +50,8 @@ const ShowDetails = ( {show}) => {
             First Air Date: {show.first_air_date} <br/>
             Last Air Date: {show.last_air_date}
         </Typography>
-        {/* <Typography variant="h6" component="h3">
-            Last Episode: {show.last_episode_to_air.name}
-        </Typography>
-        <Typography variant="h6" component="h3">
-            Last Episode Overview: {show.last_episode_to_air.overview}</Typography> */}
         <Typography variant="h6" component="h3">
             Number of Seasons: {show.last_episode_to_air.season_number}</Typography>
-        {/* <Typography variant="h6" component="h3">
-            Episode: {show.last_episode_to_air.episode_number}</Typography>
-         */}
         <Typography variant="h6" component="h3">
             Number of Episodes: {show.number_of_episodes}</Typography>
 
