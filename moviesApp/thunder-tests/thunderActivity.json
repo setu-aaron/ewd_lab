@@ -224,6 +224,36 @@
     "colId": "history",
     "containerId": "",
     "name": "PersonDetails",
+    "url": "https://api.themoviedb.org/3/search/person?api_key=e7ff1babf9d4b0d3a3351ce8d0739b3e&query=aaron&include_adult=false",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-18T01:34:54.985Z",
+    "modified": "2023-04-08T17:00:30.021Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "api_key",
+        "value": "e7ff1babf9d4b0d3a3351ce8d0739b3e",
+        "isPath": false
+      },
+      {
+        "name": "query",
+        "value": "aaron",
+        "isPath": false
+      },
+      {
+        "name": "include_adult",
+        "value": "false",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "19cb768f-44d7-41bc-9aee-2df9bbb4ff5d",
+    "colId": "history",
+    "containerId": "",
+    "name": "SearchPerson",
     "url": "https://api.themoviedb.org/3/person/31?api_key=e7ff1babf9d4b0d3a3351ce8d0739b3e",
     "method": "GET",
     "sortNum": 0,

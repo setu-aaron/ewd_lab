@@ -17,6 +17,8 @@ import PersonDetailsPage from "./pages/personDetailsPage";
 import ShowsHomePage from "./pages/showPage";
 import ShowSeasonPage from "./pages/showSeasonPage";
 import ShowEpisodePage from "./pages/showEpisodePage";
+import MyMoviesPage from "./pages/myMoviesPage";
+import NewMoviePage from "./pages/newMoviePage";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import MoviesContextProvider from "./contexts/moviesContext";
@@ -32,9 +34,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-
-
 
 const App = () => {
   const [session, setSession] = useState(null)
@@ -68,7 +67,6 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage session={session}/>} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/accounts" element={<AccountPage />} />
             <Route path="/account" element={
               <ProtectedRoute>
                 <AccountPage />
@@ -86,6 +84,12 @@ const App = () => {
             <Route path="/show/:id/:favorite" element={<ShowDetailsPage />} />
             <Route path="/show/:showId/season/:seasonId" element={<ShowSeasonPage />} />
             <Route path="/show/:showId/season/:seasonId/episode/:episodeId" element={<ShowEpisodePage />} />
+            <Route path="/myMovies" element={<MyMoviesPage />} />
+            <Route path="/myMovies/new" element={
+              <ProtectedRoute>
+                <NewMoviePage />
+              </ProtectedRoute>
+            } />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </MoviesContextProvider>
