@@ -1,25 +1,22 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../supabaseClient'
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import Spinner from '../components/spinner'
 import { useQuery } from "react-query";
 import { getGenres } from "../api/tmdb-api";
+import NewMovie from '../components/createNewMovie/newMovie';
 
-const styles = {
-  card: { maxWidth: 500
-   },
-}
+
 
 export default function NewMoviePage() {
   const [loading, setLoading] = useState(false)
-  const [title, setTitle] = useState(null)
-  const [overview, setOverview] = useState(null)
-  const [homePage, setHomePage] = useState(null)
-  const [tagLine, setTagLine] = useState(null)
-  const [estimatedRevenue, setEstimatedRevenue] = useState(null)
+  const [title, setTitle] = useState("")
+  const [overview, setOverview] = useState("")
+  const [homePage, setHomePage] = useState("")
+  const [tagLine, setTagLine] = useState("")
+  const [estimatedRevenue, setEstimatedRevenue] = useState("")
   const [sess, setSess] = useState(null)
-  const [selectedGenres, setSelectedGenres] = useState(null)
-
+  
+  const [chosenGenres, setChosenGenres] = useState([]);
 
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
 
@@ -41,10 +38,7 @@ export default function NewMoviePage() {
     props.onUserInput(type, value)
   } 
 
-  const handleGenreChange = e => {
-    console.log("Genre changed to: ", e.target.value)
-    setSelectedGenres(e.target.value);
-  };
+
 
 //   useEffect(() => {
 //     async function getProfile() {
@@ -79,15 +73,16 @@ export default function NewMoviePage() {
 //     }
 //   }, [sess])
 
+  function saveMovie(e){
+    e.preventDefault()
+    console.log("New Movie: saveMovie: sess: ", title, overview, homePage, tagLine, estimatedRevenue, chosenGenres)
+  }
   async function updateProfile(event) {
     event.preventDefault()
 
     setLoading(true)
     console.log("AP: updateProfile: sess: ", sess)
  
-    
-   
-
     let { error } = await supabase.from('profiles').upsert(updates)
 
     if (error) {
@@ -100,70 +95,22 @@ export default function NewMoviePage() {
     return <div>Loading...</div>
   } else {
     return (
-      <Card sx={styles.card} spacing={5}>
-        <CardHeader title="Create New Movie" />
-        <CardContent>
-        <p>
-          <TextField id="outlined-basic" 
-                    label="Movie Title"
-                    variant="outlined"
-                    onChange={(e) => setTitle(e.target.value)}
-                    style = {{width: 400}} />
-        </p>
-        <p>
-        <TextField id="outlined-basic" 
-            label="Movie Overview" 
-            variant="outlined"
-            multiline
-            rows={4}
-            rowsMax={10}
-            onChange={(e) => setOverview(e.target.value)}
-            style = {{width: 400}} />
-        </p>
-        <p>
-        <TextField id="outlined-basic" 
-            label="Movie Home Page"
-            variant="outlined"
-            onChange={(e) => setHomePage(e.target.value)}
-            style = {{width: 400}} />
-        </p>
-        <p>
-            <TextField id="outlined-basic" 
-                label="Movie Tagline"
-                variant="outlined"
-                onChange={(e) => setTagLine(e.target.value)}
-                style = {{width: 400}} />
-        </p>
-        <p>
-            <TextField id="outlined-basic" 
-                label="How much money will this movie make?"
-                variant="outlined"
-                onChange={(e) => setEstimatedRevenue(e.target.value)}
-                style = {{width: 400}} />
-        </p>
-        <p>
-        <InputLabel id="genre-label">Genre</InputLabel>
-          <Select
-            labelId="genre-label"
-            id="genre-select"
-            value={selectedGenres}
-            onChange={handleGenreChange}>
-            {genres.map((genre) => {
-              return (
-                <MenuItem key={genre.id} value={genre.id}>
-                  {genre.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </p>
-        </CardContent>
-        <CardActions>
-        <Button onClick={(e) => updateProfile(e)} variant="contained" size="medium" color="primary">
-           Update Account
-          </Button>
-        </CardActions>
-      </Card>
+      <NewMovie
+        title={title}   
+        setTitle={setTitle}
+        overview={overview}
+        setOverview={setOverview}
+        homePage={homePage}
+        setHomePage={setHomePage}
+        tagLine={tagLine}
+        setTagLine={setTagLine}
+        estimatedRevenue={estimatedRevenue}
+        setEstimatedRevenue={setEstimatedRevenue}
+        genres={genres}
+        chosenGenres={chosenGenres}
+        setChosenGenres={setChosenGenres}
+        saveMovie={saveMovie}
+        />
     )
   }
 

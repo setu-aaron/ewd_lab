@@ -268,5 +268,30 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "35d2692c-b4ba-42c3-ab61-cb2eedb7c77d",
+    "colId": "history",
+    "containerId": "",
+    "name": "getGenres",
+    "url": "https://api.themoviedb.org/3/genre/movie/list?api_key=e7ff1babf9d4b0d3a3351ce8d0739b3e&language=en-US",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-18T01:34:54.985Z",
+    "modified": "2023-04-08T22:33:09.801Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "api_key",
+        "value": "e7ff1babf9d4b0d3a3351ce8d0739b3e",
+        "isPath": false
+      },
+      {
+        "name": "language",
+        "value": "en-US",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]
