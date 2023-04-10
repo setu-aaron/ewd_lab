@@ -70,8 +70,7 @@ const MovieDetails = ( {movie}) => {
         color="secondary"
         variant="extended"
         onClick={() =>setDrawerOpen(true)}
-        sx={styles.fab}
-      >
+        sx={styles.fab} >
         <NavigationIcon />
         Reviews
       </Fab>
