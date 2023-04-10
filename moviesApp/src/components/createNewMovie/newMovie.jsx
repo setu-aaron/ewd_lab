@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { Button, Card, CardActions, CardContent, CardHeader, Chip, Grid, InputLabel, MenuItem, Paper, Select, TextField } from '@mui/material';
-
+import ListCast from '../listNewCastCrew/listCast';
+import MovieCredits from '../movieCredits/';
 const styles = {
     chipSet: {
       display: "flex",
@@ -11,7 +12,7 @@ const styles = {
       padding: 1.5,
       margin: 0,
     },
-    chipLabel: {
+    chipLabel: { 
       margin: 0.5,
     },
   card: { maxWidth: 500
@@ -24,9 +25,9 @@ export default function NewMovie({title, setTitle,
                                   tagLine, setTagLine, 
                                   estimatedRevenue, setEstimatedRevenue,
                                   genres, chosenGenres, setChosenGenres,
-                                  saveMovie
+                                  saveMovie, cast
                                 }) {
-    
+    console.log("New Movie Component cast is: ", cast)
     const [selectedGenres, setSelectedGenres] = useState("All");
     const handleGenreChange = e => {
         console.log("Genre changed to: ", e.target.value)
@@ -38,6 +39,7 @@ export default function NewMovie({title, setTitle,
       }
     
     return (
+      <>
         <Card sx={styles.card} spacing={5}>
         <CardHeader title="Create New Movie" />
         <CardContent>
@@ -126,5 +128,17 @@ export default function NewMovie({title, setTitle,
           </Button>
         </CardActions>
       </Card>
+      {cast.cast && cast.cast.length > 0 ? (
+        <p>
+        Cast should be here: {cast.cast.length}
+        </p>
+      ):(<p></p>) 
+      }
+      <Grid container id="castId">
+        <Grid item xs={12}>
+          <ListCast credits={cast}/>
+        </Grid>
+      </Grid>
+      </> 
     )
 }

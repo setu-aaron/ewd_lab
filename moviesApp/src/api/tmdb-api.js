@@ -247,10 +247,11 @@
     });
   };
 
-  export const searchPerson = (args) => {
-    const [, queryString] = args.queryKey;
-    const encodedQueryString = encodeURIComponent(queryString);
+  export const searchPerson = (searchValue) => {
+    console.log(searchValue)
+    const encodedQueryString = encodeURIComponent(searchValue);
     let url = `https://api.themoviedb.org/3/search/person?api_key=${import.meta.env.VITE_TMDB_KEY}&query=${encodedQueryString}&include_adult=false`
+    console.log("Calling URL: ", url)
     return fetch(url)
     .then((response) => {
       if (!response.ok) {

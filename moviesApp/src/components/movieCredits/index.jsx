@@ -21,7 +21,7 @@ const styles = {
 
 }
 const MovieCredits = ( {credits}) => {  
-    console.log("Credits:", credits)
+    console.log("Move Credits Component loading:", credits)
     return (<>
      {credits ? (
         <Grid container spacing={5} style={{ padding: "15px" }}>
@@ -75,7 +75,7 @@ const MovieCredits = ( {credits}) => {
                 </div>
             </Grid>
             ):(<></>)}
-
+        {credits.crew !== undefined ? (
             <Grid item xs={3}
                 id="crewId">
                 <h2>Crew</h2>
@@ -102,6 +102,7 @@ const MovieCredits = ( {credits}) => {
                 </ImageList>
             </div>
             </Grid>
+            ):(<></>)}
         </Grid>
      ) : (
             <p>Waiting for movie credits</p>
