@@ -24,3 +24,5 @@ It uses storybook for component development and was created using [vitie](https:
 ```
 VITE_TMDB_KEY=<apikey from tmbd>
 ```
+
+April 10th Deployed to vercel
