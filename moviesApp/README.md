@@ -10,7 +10,7 @@ Noticeable Changes on the UI
 + Pagination - Pagination is supported on Discover Movies, Upcoming Movies, TV
 + Added Cast and Crew for Movies 
 + Added a new View to see the Actors Details
-+ Added a Dicoverable TV Shows
++ Added Dicoverable TV Shows
 + Added a way to mark TV Shows as favorites
 + Added TV Shows to the Favorites View
 + Added TV Show Details
@@ -30,111 +30,150 @@ Changes invisible to the UI
 + Protected URL's to make sure logged in users can only do certain things.
 
 ## Feature Design.
-
-[ For each feature listed in the overview, show a screenshot(s) of its UI layout (use appropriate magnification for accessibility). Include captions with the images.]
 #### Added Cast and Crew for Movies 
+> Lists Cast and Crew from the selected movie
 ![Movie Cast and Crew](./readmeImages/cast_crew.png)
 #### Added a new View to see the Actors Details
+> Display the selected Actor's bio information
 ![Actor Details](./readmeImages/actorDetails.png)
-#### Added a Dicoverable TV Shows
+#### Added Dicoverable TV Shows
+> List tv shows from TMDB
 ![TV Shows](./readmeImages/tvShows.png)
 #### Added a way to mark TV Shows as favorites
+> Mark a TV Show as your favorite
 ![TV Show Marked Favorite](./readmeImages/tvShowMarkedFavorite.png)
 #### Added TV Shows to the Favorites View
+> Added Favorite TV Shows under Favorite Movies
 ![Favorite Movies and TV Shows](./readmeImages/favoriteMoviesAndShows.png)
 #### Added TV Show Details
+> Show the selected TV Show details including Cast and Crew
 ![Favorite Movies and TV Shows](./readmeImages/tvShowDetails.png)
 #### TV Show has a Clickable and Accordian view of Seasons
+> When expanding the season details in the accordian you can click on the link to see the details or just read the overview.
 ![Seasons Accordian](./readmeImages/seasonsAccordian.png)
 #### Added Season Details Season details that has an according view of season episodes
+> Season details shows a list of episodes in an accordian view
 ![Season Details](./readmeImages/episodesOverview.png)
 #### Added Episode Details with a Guest Star, and Crew view
+> Added Episode Details including guest starts adn Crew
 ![Season Details](./readmeImages/episodeDetail.png)
 #### Added an Account section allowing a user to login, logout and manage their account details.
-![Season Details](./readmeImages/manageAccount.png)
-![Season Details](./readmeImages/accountDetails.png)
-![Season Details](./readmeImages/login.png)
+> If a user is logged in they have a list of options they can perform  
+![Season Details](./readmeImages/manageAccount.png)  
+> Manage Account allows the user to update some information  
+![Season Details](./readmeImages/accountDetails.png)  
+> All protected pages will redirect to this page to allow users to login with a magic link  
+![Season Details](./readmeImages/login.png)  
 #### Added a My Movies View
+> A list of cusom movies created by the user
+![Season Details](./readmeImages/customMovies.png)
 #### Added a way to create "My Movies" 
+> An empty view of creating a movie
+![Season Details](./readmeImages/emptyNewMovie.png)
+> Searching for Actors to add to a custom Movie
+![Season Details](./readmeImages/newMovie.png)
 #### Added a "My Movie Details" page
-
+> Once a movie is selected details are available to review
+![Season Details](./readmeImages/customMovieDetails.png)
 e.g. 
 
-#### The Upcoming Movies feature.
-
-> Lists movies from the Upcoming movies endpoint of TMDB
-
-![][image1]
-
-#### Movies Reviews feature.
-
-> Lists all the reviews for a particular movie (text extract only).
-
-![][image2]
-
-> Click the 'Full Review' link of an entry in the above list to show the full text of a review. 
-
-![][image3]
-
-.... other features .......
-
 ## Storybook.
+Story Book screen shots
+> Illustrating the Episode Component  
+![Episode](./readmeImages/storyBookEpisode.png)  
 
-[ Include a screenshot(s) from the Storybook UI and highlight the stories for new components developed.]
+> Illustrating the Show Card similar to the Movie Card  
+![Show Card](./readmeImages/storyBookShowCard.png)  
 
-e.g.
+> Illustrating the Show Details  
+![Show Details](./readmeImages/storyBookShowDetails.png) 
 
-![][image5]
+> Illustrating the Show Episodes  
+![Show Episodes](./readmeImages/storyBookShowEpisodes.png) 
+
+> Illustrating the Season Details  
+![Season Details](./readmeImages/storyBookSeasonDetails.png)  
+
+> Illustrating the Paginator  
+![Paginator](./readmeImages/storyBookPaginator.png)  
+
+> Illustrating the Movie Credits  
+![Movie Credits](./readmeImages/storyBookMovieCredits.png)
+
+> Illustrating the Person Card  
+![Person Card](./readmeImages/storyBookPersonCard.png)  
+
+> Illustrating the New Movie  
+![New Movie](./readmeImages/storyBookNewMovie.png)  
+
+> Illustrating the Search Actors component  
+![Search Actors](./readmeImages/storyBookSearchActors.png)    
 
 ## Authentication.
+Application Routes
++ / - home page of the application displays 20 movies from TMDB 
++ /movies/page/:id - url to support pagination of movies
++ /movies/:id/:favorite - url to support displaying movie details and if the movie is a favorite or not
++ /movies/favourites - url to support showing a list of favorites 
++ /movies/upcoming - url to support the result of a TMBD Search for upcoming movies
++ /movies/upcoming/page/:id - url to support pagination for upcoming movies
++ /reviews/:id - url to support reviews
++ /reviews/form - url to support creating a review
++ /person/:id - url to support reviewing the details of an actor or cat member
++ /show/page/:id - url to support pagination support of TV Shows
++ /show/:id/:favorite - url to support displaying show details and if the movie is a favorite or not
++ /show/:showId/season/:seasonId - url to support the display of the details of a season
++ /show/:showId/season/:seasonId/episode/:episodeId - url to support episode details
++ /myMovies - url to support the display of custom created movies
++ /myMovie/:id/:favorite - a url that shows the details of a movie
++ /myMovies/new - the url to crate a new movie
++ /login - the magic link login screen
++ /account - a screen to manage authenticated user functions
 
-[ List all the routes in your app and highlight those that are protected/private (require authentication).]
+#### Protected features
 
-e.g.
+Authenticated users have the following functionality:
++ Manage their account
++ logout 
++ create a custom Movie
++ view custom movies
++ view custom movie details
 
-+ /movies - List of 20  movies from the Discover endpoint,
-+ /movies/{movie_id} - Detailed information on a specific movie.
-+ /reviews/{review_id} (Protected) - The full text of a movie review.
-+ /movie/{movie_id}/similar - A list of similar movies. 
-+ /person/{person_id} (Protected) - A specific actor's bio.
-+ etc
-+ etc
+## Supabase (if relevant)
+> Supabase auth table used by the magic link auth configuration
+![Season Details](./readmeImages/supabaseAuthTable.png)
+> Supabase tables used to store favorite movies, shows and custom movies
+![Season Details](./readmeImages/supabaseDBTables.png)
 
-#### Protected features (if relevant)
+## Deployment 
+[Deployment URL](https://ewd-n9f5r7kg8-setu-aaron.vercel.app/)
+> Home Page
+![Vercel](./readmeImages/vercelHome.png)
 
-[ Briefly state other areas where you used authentication in the app, for example, to protect access to functionality, e.g. only authenticated users can 'favourite' a movie.]
+I used the magic link to authenticate users.  To properly validate the magic link any tester would need to enter an e-mail address that they could receive the magic link to.
 
-#### Supabase (if relevant)
+## Persistence.
+Supabase was used to store user data.  Here is a view of the customMovies table:
+> I basically stored the whole move object as JSON to allow an easier reuse of components that were based using the TMDB data structure.
+![Season Details](./readmeImages/supabaseDBTables.png)  
 
-[ Include a screenshot(s) from your Supabase account that verifies its use for this app. ]
+> This table mirrors the local cache that was designed to store favorite movie ids
+![Season Details](./readmeImages/supabaseFavoriteMovies.png)  
 
-## Deployment (if relevant).
+> For favorte TV Shows I followed the same pattern as favorite movies and am storing just the show Id
+![Season Details](./readmeImages/supabaseFavoriteShows.png)  
 
-[ Specify the URL of your deployed app and include a screenshot(s) from your deployment platform (e.g. Vercal) account that verifies its use for this app. Have a preregistered user for your app and specify their credentials.
-
-Username: test1 ; Password: pass1
-]
-
-## Persistence (if relevant).
-
-[ If you are persisting data to the Supabase backend, e.g. favourite movies, fantasy movie, include screenshots with appropriate captions to verify this aspect. ]
+> This is where profiles are stored if you wanted to add a name or website address it would be saved here.
+![Season Details](./readmeImages/supabaseProfiles.png)  
 
 ## Additional Information.
-
-[ Briefly explain any other aspects of your app's design or implementation that is non-standard and worthy of mention.]
-
-[image1]: ./images/image1.png
-[image2]: ./images/image2.png
-[image3]: ./images/image3.png
-[image4]: ./images/image4.png
-[image5]: ./images/image5.png
+I thought using the Magic Link for authentication was an interesting idea.  I did find out that using Safari the magic link didn't work very well - what is happening is that Safari is sending out a pre-check that uses the auth token, so that when the user clicks the link it has alreayd been expired.  Using Chrome fixed this problem but as a user authentication I would need to really research is this is a seucre way to onbaord users.  
 
 
 
 
 
-
-
+# Personal Notes on the project:
 ## Movies Lab Project
 This project came from a zip file
 It uses storybook for component development and was created using [vitie](https://vitejs.dev/)
@@ -161,5 +200,3 @@ It uses storybook for component development and was created using [vitie](https:
 ```
 VITE_TMDB_KEY=<apikey from tmbd>
 ```
-
-April 10th Deployed to vercel
