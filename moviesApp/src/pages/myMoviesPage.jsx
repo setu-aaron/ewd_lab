@@ -54,13 +54,14 @@ const MyMoviesPage = (props) => {
       setNeedsToRefresh(false);
     }
   }, [needsToRefresh]);
+  
   useEffect(() => {
     console.log("Home Page favoriteChanged: ", favoriteChanged);
-    if (favoriteChanged) {
+    if (needsToRefresh) {
       console.log("Home Page: favoriteChanged is true setting to false");
-      setFavoriteChanged(false);
+      setNeedsToRefresh(false);
     }
-  }, [favoriteChanged]);
+  }, [needsToRefresh]);
 
   if (isLoading) {
     return <Spinner />;
@@ -87,7 +88,7 @@ const MyMoviesPage = (props) => {
         isMovie={true}
         pageId={id}
         action={(movie) => {
-          return <DeleteCustomMovie movie={movie} setFavoriteChanged={setFavoriteChanged} />;
+          return <DeleteCustomMovie movie={movie} setFavoriteChanged={setNeedsToRefresh} />;
         }}
         paginationProps={paginationProps}
         favoriteChanged={favoriteChanged}
