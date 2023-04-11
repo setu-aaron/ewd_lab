@@ -142,6 +142,7 @@ const FavouriteMoviesPage = () => {
         title="Favourite Movies"
         movies={displayMovies}
         shows={displayShows}
+        baseUrl="/movies/" 
         isMovie={true}
         isShow={true}
         action={(movie) => {

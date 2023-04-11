@@ -1,29 +1,12 @@
 import React from "react";
 import {useContext, useState, useEffect} from "react";
 import PageTemplate from "../components/templateMovieListPage";
-import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/spinner";
-import { getMovies } from "../api/tmdb-api";
-import useFiltering from "../hooks/useFiltering";
-import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import DeleteCustomMovie from "../components/cardIcons/deleteCustomMovie";
 import Fab from "@mui/material/Fab";
+import { supabase } from '../supabaseClient'
 
-// import MovieFilterUI, {
-//   titleFilter,
-//   genreFilter,
-// } from "../components/movieFilterUI";
-
-// const titleFiltering = {
-//   name: "title",
-//   value: "",
-//   condition: titleFilter,
-// };
-// const genreFiltering = {
-//   name: "genre",
-//   value: "0",
-//   condition: genreFilter,
-// };
 
 const styles = {
     fab: { 
@@ -36,13 +19,41 @@ const MyMoviesPage = (props) => {
   const { id } = useParams();
   const [favoriteChanged, setFavoriteChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  //const { data, error, isLoading, isError } = useQuery(["discover", id], getMovies);
+  const [needsToRefresh, setNeedsToRefresh] = useState(true);
+  const [myMovies, setMyMovies] = useState([]);
 
-//   const { filterValues, setFilterValues, filterFunction } = useFiltering(
-//     [],
-//     [titleFiltering, genreFiltering]
-//   );
+  useEffect(() => {
+    async function retrieveCustomMovies(){
+      const {data: { session },} = await supabase.auth.getSession()   
+      if (session){
+        console.log("AP: session: ", session)
+        let { data: createdMovies, error } = await supabase
+        .from('createdMovies')
+        .select('*')
+        .eq('userId', session.user.id)
+        console.log("AP: createdMovies: ", createdMovies)
 
+        let movieArray = []
+        for (let i = 0; i < createdMovies.length; i++){
+          let movie = createdMovies[i];
+          let movieDetails = movie.movieDetails
+          movieDetails.id=movie.id
+          console.log("myMoviesPage: movieDetails: ", movieDetails.tagLine)
+          movieArray.push(movieDetails)
+        }
+
+        setMyMovies(movieArray)
+      } else {
+        console.log("AP: session is null");
+      }
+    }
+    
+
+    if (needsToRefresh){
+      retrieveCustomMovies();
+      setNeedsToRefresh(false);
+    }
+  }, [needsToRefresh]);
   useEffect(() => {
     console.log("Home Page favoriteChanged: ", favoriteChanged);
     if (favoriteChanged) {
@@ -55,24 +66,11 @@ const MyMoviesPage = (props) => {
     return <Spinner />;
   }
 
-//   if (isError) {
-//     return <h1>{error.message}</h1>;
-//   }
-
-//   const changeFilterValues = (type, value) => {
-//     const changedFilter = { name: type, value: value };
-//     const updatedFilterSet =
-//       type === "title"
-//         ? [changedFilter, filterValues[1]]
-//         : [filterValues[0], changedFilter];
-//     setFilterValues(updatedFilterSet);
-//   };
-
   const movies = [];
   //const {total_pages, page, total_results} = data;
   let page = 1;
     let total_pages = 1;
-  const displayedMovies = movies;//filterFunction(movies);
+  const displayedMovies = myMovies;//filterFunction(movies);
   const paginationProps = {
     currentPage: page,
     visiblePages: 5,
@@ -82,14 +80,14 @@ const MyMoviesPage = (props) => {
   return (
     <>      
       <PageTemplate
-        title="Discover Movies"
+        title="My Custom Movies"
         movies={displayedMovies}
-        baseUrl="/movies/"
+        baseUrl="/myMovie/"
         isShow={false}
         isMovie={true}
         pageId={id}
         action={(movie) => {
-          return <AddToFavouritesIcon movie={movie} setFavoriteChanged={setFavoriteChanged} />;
+          return <DeleteCustomMovie movie={movie} setFavoriteChanged={setFavoriteChanged} />;
         }}
         paginationProps={paginationProps}
         favoriteChanged={favoriteChanged}
@@ -100,11 +98,6 @@ const MyMoviesPage = (props) => {
         href="/myMovies/new"
         sx={styles.fab} > New Movie
       </Fab>
-      {/* <MovieFilterUI
-        onFilterValuesChange={changeFilterValues}
-        titleFilter={filterValues[0].value}
-        genreFilter={filterValues[1].value}
-      /> */}
     </>
   );
 };

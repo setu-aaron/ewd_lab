@@ -3,7 +3,6 @@ import Header from "../headerMovieList";
 import Grid from "@mui/material/Grid";
 import MovieList from "../movieList";
 import Paginator from "../pagination/paginator";
-import { Typography } from "@mui/material";
 
 const styles = {
   root: { 
@@ -27,7 +26,7 @@ function MovieListPageTemplate({ movies, shows, baseUrl, isShow, isMovie, pageId
           <MovieList
             action={action}
             movies={movies}
-            baseUrl={/movies/}
+            baseUrl={baseUrl}
             isShow={false}
             isMovie={true}
             favoriteChanged={favoriteChanged}/>

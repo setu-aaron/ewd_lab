@@ -38,13 +38,13 @@ const ListCast = ( {credits, setPerson}) => {
      {credits ? (
         <Grid container spacing={5} style={{ padding: "15px" }}>
             {credits.cast !== undefined ? (
-            <Grid item xs={12} sm={6} md={4} lg={6} xl={11}>
+            <Grid>
                 <Paper sx={styles.gridListRoot}>
                     <h2>Search Results</h2>
                         <ImageList cols={1}>
                             {credits.cast.map((c) => ( 
                                 <Grid container>
-                                    <Grid item xs={6} sm={3} md={2} lg={3} xl={9}>
+                                    <Grid item xs={6} sm={3} md={2} lg={6} xl={9}>
                                         <Link to={`/person/${c.id}`}>
                                             <ImageListItem
                                                 key={c.profile_path}

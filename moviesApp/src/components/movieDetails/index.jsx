@@ -54,6 +54,7 @@ const MovieDetails = ( {movie}) => {
           </li>
         ))}
       </Paper>
+      { movie.revenue === 0 ? (<></>): (
       <Paper component="ul" sx={styles.chipSet}>
         <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
         <Chip
@@ -66,6 +67,7 @@ const MovieDetails = ( {movie}) => {
         />
         <Chip label={`Released: ${movie.release_date}`} />
       </Paper>
+      )}
       <Fab    
         color="secondary"
         variant="extended"

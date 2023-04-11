@@ -18,14 +18,14 @@ export default function NewMoviePage() {
   const [tagLine, setTagLine] = useState("")
   const [estimatedRevenue, setEstimatedRevenue] = useState("")
   const [searchValue, setSearchValue] = useState("")
-  const [sess, setSess] = useState(null)
   const [credits, setCredits] = useState({})
   const [chosenGenres, setChosenGenres] = useState([]);
   const [executeSearch, setExecuteSearch] = useState(false);
   const [person, setPerson] = useState({});
   const [cast, setCast] = useState({});
   const [newCastMember, setNewCastMember] = useState(null)
-
+  const [saveMovieNeeded, setSaveMovieNeeded] = useState(false);
+  const [userNewMovie, setUserNewMovie] = useState({});
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
 
   useEffect (()=>{
@@ -67,6 +67,44 @@ export default function NewMoviePage() {
     
   },[newCastMember])
 
+  useEffect(() => {
+
+    async function saveMovie(){
+      const {data: { session },} = await supabase.auth.getSession()   
+      if (session){
+        console.log("AP: session: ", session)
+        const { saveData, saveError } = await supabase
+        .from('createdMovies')
+        .insert([
+          { userId: session.user.id, 
+            movieDetails:  userNewMovie},
+        ])
+        if(saveData){
+          setTitle("")
+          setOverview("")
+          setHomePage("")
+          setTagLine("")
+          setEstimatedRevenue("")
+          setChosenGenres([])
+          setCredits({})
+          setCast({})
+          setPerson({})
+          setNewCastMember(null)
+          setUserNewMovie({})
+          setSaveMovieNeeded(false)
+        }
+
+      } else {
+        console.log("AP: session is null");
+      }
+    }
+
+    if (saveMovieNeeded === true){
+      setSaveMovieNeeded(false);
+      saveMovie();
+    }
+
+  }, [saveMovieNeeded])
   if (isLoading) {
     return <Spinner />;
   }
@@ -85,63 +123,42 @@ export default function NewMoviePage() {
     props.onUserInput(type, value)
   } 
 
-
-
-//   useEffect(() => {
-//     async function getProfile() {
-//       setLoading(true)
-//       console.log("AP: Loading is true");
-    //   const {data: { session },} = await supabase.auth.getSession()   
-    //   if (session){
-    //     console.log("AP: session: ", session)
-    //     setSess(session);
-    //   } else {
-    //     console.log("AP: session is null");
-        
-    //   }
-    //   console.log("AP: User ID is: ", session.user.id)
-    //   let { data, error } = await supabase
-    //     .from('profiles')
-    //     .select(`username, website, avatar_url`)
-    //     .eq('id', session.user.id)
-    //     .single()
-
-    //   if (error) {
-    //     console.warn(error)
-    //   } else if (data) {
-        
-    //   }
-
-//       setLoading(false)
-//     }
-//     if (sess == null){
-//       console.log("AP: session is null, calling get profile ");
-//       getProfile()
-//     }
-//   }, [sess])
-
   function saveMovie(e){
     e.preventDefault()
     console.log("New Movie: saveMovie: sess: ", title, overview, homePage, tagLine, estimatedRevenue, chosenGenres)
+    let newMovie = {}
+    newMovie.title = title
+    newMovie.overview = overview
+    newMovie.homePage = homePage
+    newMovie.tagline = tagLine
+    newMovie.revenue = 0
+    newMovie.runtime = "tbd"
+    newMovie.vote_averate=5
+    newMovie.vote_count=0
+    newMovie.releaseDate="?"
+    let modGenres = []
+    console.log("Chosen Genres: ", chosenGenres)
+    chosenGenres.forEach((name)=>{
+      let newGenre = {}
+      newGenre.id = name
+      newGenre.name = name
+      modGenres.push(newGenre)
+    })
+    console.log("Mod genres: ", modGenres)
+    newMovie.genres = modGenres
+    if (cast.length > 0){
+      newMovie.poster_path = cast[0].profile_path
+    }
+    
+    newMovie.cast = cast
+    setUserNewMovie(newMovie)
+    setSaveMovieNeeded(true)
   }
 
   function savePersonToRole(person){
     setNewCastMember(person)
   }
-  async function updateProfile(event) {
-    event.preventDefault()
-
-    setLoading(true)
-    console.log("AP: updateProfile: sess: ", sess)
  
-    let { error } = await supabase.from('profiles').upsert(updates)
-
-    if (error) {
-      alert(error.message)
-    }
-    setLoading(false)
-  }
-
   function onSearch(e){
     console.log("Searching for: ", searchValue)
     setExecuteSearch(true);
@@ -152,7 +169,7 @@ export default function NewMoviePage() {
   } else {
     return (
       <Grid container>
-        <Grid item xl={3}>
+        <Grid item lg={4} xl={3}>
           <NewMovie
             title={title}   
             setTitle={setTitle}
@@ -170,7 +187,7 @@ export default function NewMoviePage() {
             saveMovie={saveMovie} 
             cast={cast}/>
         </Grid>
-        <Grid item xl={3}>
+        <Grid item lg={4} xl={3}>
           <SearchPerson
           searchValue={searchValue}
           setSearchValue = {setSearchValue}
@@ -178,7 +195,7 @@ export default function NewMoviePage() {
           <ListCast credits={credits}
             setPerson={setPerson} />
         </Grid>
-        <Grid item xl={3}>
+        <Grid item lg={4} xl={3}>
           <AddPerson person={person}
                      setPerson={setPerson}
                      savePersonToRole={savePersonToRole}/>

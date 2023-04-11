@@ -23,7 +23,7 @@ const styles = {
   },
 };
 
-export default function MovieCard({movie, action,baseUrl, favorites}) {
+export default function MovieCard({movie, action, baseUrl, favorites}) {
   //const { favourites} = useContext(MoviesContext);
   //console.log("MC: movie: ", movie.title)
   //console.log("MC: favoriteChanged: ", favoriteChanged)
@@ -33,6 +33,8 @@ export default function MovieCard({movie, action,baseUrl, favorites}) {
   } else {
     movie.favourite = false;
   }
+
+  //console.log("Movie Card: ", movie);
 
   return (
     <Card sx={styles.card}>
@@ -64,16 +66,22 @@ export default function MovieCard({movie, action,baseUrl, favorites}) {
       <CardContent>
         <Grid container>
           <Grid item xs={6}>
-            <Typography variant="h6" component="p">
-              <CalendarIcon fontSize="small" />
-              {movie.release_date}
-            </Typography>
+            {movie.release_date ? (
+              <Typography variant="h6" component="p">
+                <CalendarIcon fontSize="small" />
+                {movie.release_date}
+              </Typography>
+            ) : (<></>)
+            }
           </Grid>
           <Grid item xs={6}>
+          {movie.vote_average ? (
             <Typography variant="h6" component="p">
               <StarRateIcon fontSize="small" />
               {"  "} {movie.vote_average}{" "}
             </Typography>
+            ) : (<></>)
+          }
           </Grid>
         </Grid>
       </CardContent>

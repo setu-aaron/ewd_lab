@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { Button, Card, CardActions, CardContent, CardHeader, Chip, Grid, InputLabel, MenuItem, Paper, Select, TextField } from '@mui/material';
 import ListCast from '../listNewCastCrew/listCast';
-import MovieCredits from '../movieCredits/';
 const styles = {
     chipSet: {
       display: "flex",
@@ -23,7 +22,6 @@ export default function NewMovie({title, setTitle,
                                   overview, setOverview, 
                                   homePage, setHomePage, 
                                   tagLine, setTagLine, 
-                                  estimatedRevenue, setEstimatedRevenue,
                                   genres, chosenGenres, setChosenGenres,
                                   saveMovie, cast
                                 }) {
@@ -33,6 +31,7 @@ export default function NewMovie({title, setTitle,
         console.log("Genre changed to: ", e.target.value)
         setSelectedGenres(e.target.value);
       };
+      
       function addGenre(e){
         e.preventDefault()
         setChosenGenres([...chosenGenres, selectedGenres])
@@ -78,14 +77,6 @@ export default function NewMovie({title, setTitle,
                 style = {{width: 400}} />
         
         <p></p>
-            <TextField id="outlined-basic" 
-                label="How much money will this movie make?"
-                variant="outlined"
-                value={estimatedRevenue}
-                onChange={(e) => setEstimatedRevenue(e.target.value)}
-                style = {{width: 400}} />
-        
-        <p></p>
         <InputLabel id="genre-label">Genre</InputLabel>
 
         <Grid container spacing={5}>
@@ -128,12 +119,7 @@ export default function NewMovie({title, setTitle,
           </Button>
         </CardActions>
       </Card>
-      {cast.cast && cast.cast.length > 0 ? (
-        <p>
-        Cast should be here: {cast.cast.length}
-        </p>
-      ):(<p></p>) 
-      }
+      
       <Grid container id="castId">
         <Grid item xs={12}>
           <ListCast credits={cast}/>
