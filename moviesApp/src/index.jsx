@@ -90,7 +90,11 @@ const App = () => {
                 <MyMoviePage />
               </ProtectedRoute>
             } />
-            <Route path="/myMovie/:id/:favorite" element={<MyMovieDetailsPage />} />
+            <Route path="/myMovie/:id/:favorite" element={
+              <ProtectedRoute>
+                <MyMovieDetailsPage />
+              </ProtectedRoute>
+            } />
             <Route path="/myMovies/new" element={
               <ProtectedRoute>
                 <NewMoviePage />
