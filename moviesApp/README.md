@@ -200,3 +200,75 @@ It uses storybook for component development and was created using [vitie](https:
 ```
 VITE_TMDB_KEY=<apikey from tmbd>
 ```
+
+## Docker
+### Build  
+```
+cd proxy
+docker build -t tmdbproxy .
+docker run -d -p 8000:80 tmdbproxy
+
+```
+
+## NGINX
+==> nginx
+Docroot is: /opt/homebrew/var/www
+
+The default port has been set in /opt/homebrew/etc/nginx/nginx.conf to 8080 so that
+nginx can run without sudo.
+
+nginx will load all files in /opt/homebrew/etc/nginx/servers/.
+
+To restart nginx after an upgrade:
+  brew services restart nginx
+Or, if you don't want/need a background service you can just run:
+  /opt/homebrew/opt/nginx/bin/nginx -g daemon off;
+(base) aaronobrien@air-de-aaron moviesApp % brew servers start nginx 
+Error: Unknown command: servers
+(base) aaronobrien@air-de-aaron moviesApp % brew services start nginx
+==> Tapping homebrew/services
+Cloning into '/opt/homebrew/Library/Taps/homebrew/homebrew-services'...
+remote: Enumerating objects: 2430, done.
+remote: Counting objects: 100% (2430/2430), done.
+remote: Compressing objects: 100% (1142/1142), done.
+remote: Total 2430 (delta 1133), reused 2337 (delta 1100), pack-reused 0
+Receiving objects: 100% (2430/2430), 662.37 KiB | 2.75 MiB/s, done.
+Resolving deltas: 100% (1133/1133), done.
+Tapped 1 command (45 files, 830.5KB).
+==> Successfully started `nginx` (label: homebrew.mxcl.nginx)
+(base) aaronobrien@air-de-aaron moviesApp % code /opt/homebrew/etc/nginx/nginx.conf
+(base) aaronobrien@air-de-aaron moviesApp % brew services restart nginx
+Stopping `nginx`... (might take a while)
+==> Successfully stopped `nginx` (label: homebrew.mxcl.nginx)
+==> Successfully started `nginx` (label: homebrew.mxcl.nginx)
+(base) aaronobrien@air-de-aaron moviesApp % brew services restart nginx
+Stopping `nginx`... (might take a while)
+==> Successfully stopped `nginx` (label: homebrew.mxcl.nginx)
+
+
+## Configs
+http dir
+```
+/opt/homebrew/var/www
+```
+
+Application setup UI:
+```
+cd /Users/aaronobrien/Desarrollo/SETU/ewd_lab/moviesApp
+npm run build
+cd dist
+tar -cvf ui.tar ./*
+
+mv ./ui.tar /opt/homebrew/var/www
+cd /opt/homebrew/var/www
+tar -xvf ./ui.tar
+```
+
+Services setup:
+Services run under an epress service.  To start them you need mongo running:
+```
+docker pull mongo
+docker run -d -p 27017:27017 --name test-mongo mongo:latest
+cd /Users/aaronobrien/Desarrollo/SETU/ewd-api-labs-2023/
+npm start
+```

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../supabaseClient'
 import Typography from "@mui/material/Typography";
 import { Button, Card, CardActions, Grid, TextField } from '@mui/material';
+import { saveUser } from "../api/tmdb-api";
+import { useQuery } from "react-query";
 
 
 const styles = {
@@ -49,10 +51,16 @@ export default function Auth() {
 
     setLoading(true)
     const { error } = await supabase.auth.signInWithOtp({ email })
+   
+    //const { data, saveError, isLoading, isError } = useQuery(["user", email], saveUser);
+
+    saveUser(email);
+
 
     if (error) {
       alert(error.error_description || error.message)
     } else {
+      // update the api with the user's e-mail
       alert('Check your email for the login link!')
     }
     setLoading(false)

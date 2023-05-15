@@ -4,16 +4,19 @@
     console.log("API's getMovies called with page: ", cPage);
     const page = cPage.queryKey[1];
     console.log("API's getMovies called with page: ", page);
-    return fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
-    ).then((response) => {
+
+    let url = "http://localhost:8001/api/movies/page/" + page;
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    }).then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
       }
       return response.json();
-    })
-    .catch((error) => {
-       throw error
     });
   };
 
@@ -21,9 +24,14 @@
     console.log("API's getShows called with page: ", cPage);
     const page = cPage.queryKey[1];
     console.log("API's getShows called with page: ", page);
-    return fetch(
-      `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
-    ).then((response) => {
+    let url = `http://localhost:8001/api/shows/page/${page}`;
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    }).then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
       }
@@ -36,8 +44,15 @@
 
   export const getUpcomingMovies = (cPage) => {
     const page = cPage.queryKey[1];
+    console.log("API's getUpcomingMovies called with page: ", page )
     return fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&page=${page}`
+      `http://localhost:8001/api/movies/upcoming/page/${page}`,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+      }
     ).then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
@@ -55,11 +70,16 @@
     console.log("ID Part: ", idPart)
     const { id } = idPart;
     console.log("ID: ", id)
-    let url = `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    let url = `http://localhost:8001/api/movies/${id}`
     console.log("URL: ", url)
-    return fetch(
-      url
-    ).then((response) => {
+    console.log("Token: ", localStorage.getItem('token'));
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    }).then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
       }
@@ -75,11 +95,16 @@
     console.log("ID Part: ", idPart)
     const { id } = idPart;
     console.log("ID: ", id)
-    let url = `https://api.themoviedb.org/3/tv/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    let url = `http://localhost:8001/api/shows/${id}`
     console.log("URL: ", url)
-    return fetch(
-      url
-    ).then((response) => {
+    console.log("Token: ", localStorage.getItem('token'));
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    }).then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
       }
@@ -91,27 +116,42 @@
   };
 
   export const getGenres = async () => {
-    return fetch(
-      "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
-        import.meta.env.VITE_TMDB_KEY +
-        "&language=en-US"
-    ).then( (response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
+    let url = `http://localhost:8001/api/genres/`
+    //let url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${import.meta.env.VITE_TMDB_KEY }&language=en-US"`
+    console.log("URL: ", url)
+    console.log("Token: ", localStorage.getItem('token'));
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
       }
-      return response.json();
+    }).then((response) => response.json())
+    .then((data) => {
+      console.log("Genres data: ", data);
+      return data;
     })
     .catch((error) => {
       throw error
    });
   };
 
-  export const getMovieImages = ({ queryKey }) => {
-    const [, idPart] = queryKey;
+  export const getMovieImages = ( args ) => {
+    console.log(args)
+    const [, idPart] = args.queryKey;
+    console.log("ID Part: ", idPart)
     const { id } = idPart;
-    return fetch(
-      `https://api.themoviedb.org/3/movie/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`
-    ).then( (response) => {
+    console.log("ID: ", id)
+    let url = `http://localhost:8001/api/movies/${id}/images`
+    console.log("Movie Images URL: ", url)
+    console.log("Token: ", localStorage.getItem('token'));
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    }).then((response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
       }
@@ -122,12 +162,22 @@
       throw error
    });
   };
-  export const getShowImages = ({ queryKey }) => {
-    const [, idPart] = queryKey;
+  export const getShowImages = (args) => {
+    console.log(args)
+    const [, idPart] = args.queryKey;
+    console.log("ID Part: ", idPart)
     const { id } = idPart;
-    return fetch(
-      `https://api.themoviedb.org/3/tv/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`
-    ).then( (response) => {
+    console.log("ID: ", id)
+    let url = `http://localhost:8001/api/shows/${id}/images`
+    console.log("Shows Images URL: ", url)
+    console.log("Token: ", localStorage.getItem('token'));
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    }).then( (response) => {
       if (!response.ok) {
         throw new Error(response.json().message);
       }
@@ -141,8 +191,13 @@
 
   export const getMovieReviews = (id) => {
     return fetch(
-      `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`
-    )
+      `http://localhost:8001/api/movies/reviews/${id}`,{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        }
+      })
       .then((res) => res.json())
       .then((json) => {
         // console.log(json.results);
@@ -158,9 +213,15 @@
     console.log("MCID: ", id)
 
     console.log("Getting Movie Credits for: ", id)
-    let url = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    let url = `http://localhost:8001/api/movies/credits/${id}`
     console.log("Movie Credits URL: ", url)
-    return fetch(url)
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    })
     .then((response) => {
       if (!response.ok) {
         console.log("Error calling url: ", {url});
@@ -175,9 +236,16 @@
 
   export const getEpisodeDetails = (args) => {
     const [, showId, seasonId, episodeId] = args.queryKey;
-    let url = `https://api.themoviedb.org/3/tv/${showId}/season/${seasonId}/episode/${episodeId}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    let url = `http://localhost:8080/api/shows/${showId}/season/${seasonId}/episode/${episodeId}`
+    //let url = `https://api.themoviedb.org/3/tv/${showId}/season/${seasonId}/episode/${episodeId}?api_key=${import.meta.env.VITE_TMDB_KEY}`
     console.log("Movie Credits URL: ", url)
-    return fetch(url)
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('token')
+    }
+    })
     .then((response) => {
       if (!response.ok) {
         console.log("Error calling url: ", {url});
@@ -192,9 +260,15 @@
   
   export const getSeasonDetails = (args) => {
     const [, showId, seasonId] = args.queryKey;
-    let url = `https://api.themoviedb.org/3/tv/${showId}/season/${seasonId}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    let url = `http://localhost:8001/api/shows/${showId}/season/${seasonId}`
     console.log("Movie Credits URL: ", url)
-    return fetch(url)
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('token')
+    }
+    })
     .then((response) => {
       if (!response.ok) {
         console.log("Error calling url: ", {url});
@@ -214,10 +288,16 @@
     const { id } = idPart;
     console.log("MCID: ", id)
 
-    console.log("Getting Show Credits for: ", id)
-    let url = `https://api.themoviedb.org/3/tv/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    console.log("Getting Movie Credits for: ", id)
+    let url = `http://localhost:8001/api/shows/${id}/credits`
     console.log("Movie Credits URL: ", url)
-    return fetch(url)
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    })
     .then((response) => {
       if (!response.ok) {
         console.log("Error calling url: ", {url});
@@ -233,8 +313,15 @@
   export const getPerson = (args) => {
     const [, idPart] = args.queryKey;
     const { id } = idPart;
-    let url = `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
-    return fetch(url)
+    let url = `http://localhost:8001/api/person/${id}`
+    console.log("Person URL ", url)
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    })
     .then((response) => {
       if (!response.ok) {
         console.log("Error calling url: ", {url});
@@ -265,5 +352,57 @@
     });
   };
 
-  
-  
+  export const saveUser = (userEmail) => {
+    console.log("Working with email: ", userEmail);
+    //const encodedemail = encodeURIComponent(userEmail);
+    console.log("Encoded email: ", userEmail);
+    let myBody = {
+      "firstName": "Supabase User",
+      "lastName": "Supabase User",
+      "email": userEmail,
+    };
+    let bodyString = JSON.stringify(myBody);
+    console.log("Body String: ", bodyString);
+    let url = "http://localhost:8001/api/accounts";
+    //let url = "/services/api/accounts"
+    //let url = "api/accounts/"
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: bodyString,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+      localStorage.setItem("userId", data.id);
+      localStorage.setItem("userEmail", data.email);
+      validateUser(userEmail);
+      return data;
+    })
+    .catch((error) => console.log("Error calling url", url, error));
+  };
+
+
+  export const validateUser = (userEmail) => {
+    console.log("Validate User working with email: ", userEmail);
+    const encodedemail = encodeURIComponent(userEmail);
+    let url = "http://localhost:8001/api/accounts/security/token"
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "email": userEmail,
+      }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Data: ", data);
+      localStorage.setItem("token", data.token);
+      return data;
+    })
+    .catch((error) => console.log(error));
+  };

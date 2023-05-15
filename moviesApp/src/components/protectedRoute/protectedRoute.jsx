@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import { Navigate } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 import { supabase } from "../../supabaseClient";
+import { MoviesContext } from "../../contexts/moviesContext";
 import Account from "../../pages/accountPage";
 const ProtectedRoute = ({ children }) => {
+    const context = useContext(MoviesContext);
     const location = useLocation();
     const [sess, setSess] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -17,8 +19,9 @@ const ProtectedRoute = ({ children }) => {
     async function retrieveSession() {
         console.log("retrieving session")
         const {data: { session },} = await supabase.auth.getSession()
-         setSess(session);
+        setSess(session);
         setLoading(false);
+        console.log("Session retrieved", session)
     }
     
     if (loading) {

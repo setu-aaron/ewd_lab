@@ -66,7 +66,11 @@ const App = () => {
         <SiteHeader />
         <MoviesContextProvider>
           <Routes>
-            <Route path="/" element={<HomePage session={session}/>} />
+            <Route path="/" element={
+              <ProtectedRoute>
+                <HomePage session={session}/>
+              </ProtectedRoute>
+              } />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/account" element={
               <ProtectedRoute>
