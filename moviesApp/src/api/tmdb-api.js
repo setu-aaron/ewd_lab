@@ -337,9 +337,16 @@
   export const searchPerson = (searchValue) => {
     console.log(searchValue)
     const encodedQueryString = encodeURIComponent(searchValue);
-    let url = `https://api.themoviedb.org/3/search/person?api_key=${import.meta.env.VITE_TMDB_KEY}&query=${encodedQueryString}&include_adult=false`
+    //let url = `https://api.themoviedb.org/3/search/person?api_key=${import.meta.env.VITE_TMDB_KEY}&query=${encodedQueryString}&include_adult=false`
+    let url = `http://localhost:8001/api/person/search/${searchValue}`
     console.log("Calling URL: ", url)
-    return fetch(url)
+    return fetch(url,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      }
+    })
     .then((response) => {
       if (!response.ok) {
         console.log("Error calling url: ", {url});
